@@ -7,9 +7,9 @@ export default class Theme {
     let lightTheme = {
       type: 'light',
       palette: {
-        leadColor: '#3CB9E2',
-        leadAccent1: '#C3EAF7',
-        leadAccent2: '#D8F1F9',
+        primaryColor: '#3CB9E2',
+        secondaryColor: '#C3EAF7',
+        thirdColor: '#D8F1F9',
         bgColor: '#EAEFF1',
         navBarBgColor: '#293642',
         modalBg: '#283642',
@@ -60,9 +60,9 @@ export default class Theme {
     let darkTheme = {
       type: 'light',
       palette: {
-        leadColor: '#3CB9E2',
-        leadAccent1: '#34576A',
-        leadAccent2: '#314151',
+        primaryColor: '#3CB9E2',
+        secondaryColor: '#34576A',
+        thirdColor: '#314151',
         bgColor: '#334353',
         navBarBgColor: '#293642',
         modalBg: '#283642',

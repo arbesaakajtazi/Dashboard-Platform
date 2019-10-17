@@ -1,7 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
-// import api from 'middleware/Api'
+import api from 'middleware/Api'
 
 const history = createBrowserHistory()
 console.log(history, 'historyyyy')
@@ -50,6 +50,7 @@ const middleware = [
   logger,
   crashReporter,
   thunk,
+  api
 ].filter(Boolean)
 
 /**
