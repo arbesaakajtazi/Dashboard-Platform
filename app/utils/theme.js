@@ -12,15 +12,17 @@ export default class Theme {
         leadAccent2: '#D8F1F9',
         bgColor: '#EAEFF1',
         navBarBgColor: '#293642',
+        modalBg: '#283642',
+        buttonBg: '#A3B3C2',
+        cardBg: '#FFF',
+        searchBg: '#D9E0E6',
+        onDragCardBg: '#94A6B8',
         common: {
           white: '#fff',
           black: '#000'
         },
         leadTextColor: '#314151',
         textColor: '#94A6B8',
-        modalBg: '#283642',
-        buttonBg: '#A3B3C2',
-        searchBg: '#D9E0E6'
       },
       size: {
         displayFontSize: 36,
@@ -63,15 +65,17 @@ export default class Theme {
         leadAccent2: '#314151',
         bgColor: '#334353',
         navBarBgColor: '#293642',
+        modalBg: '#283642',
+        buttonBg: '#A3B3C2',
+        cardBg: '#8CA0B3',
+        searchBg: '#293642',
+        onDragCardBg: '#94A6B8',
         common: {
           white: '#fff',
           black: '#000'
         },
         leadTextColor: '#314151',
-        textColor: '#94A6B8',
-        modalBg: '#283642',
-        buttonBg: '#A3B3C2',
-        searchBg: '#293642'
+        textColor: '#fff',
       },
       size: {
         displayFontSize: 36,
