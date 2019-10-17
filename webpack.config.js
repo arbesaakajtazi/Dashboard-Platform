@@ -23,6 +23,9 @@ module.exports = {
       'react-dom': '@hot-loader/react-dom',
     },
   },
+  devServer: {
+    hot: true
+  },
   module: {
     rules: [
       {
