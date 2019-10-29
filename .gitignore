@@ -1,5 +1,7 @@
 node_modules/
 # build code
+build/*
+!build/favicon.png
 .idea/*
 .history/*
 package-lock.json
