@@ -2,6 +2,7 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
+import authReducer from 'reducers/Auth/Auth'
 
 const history = createBrowserHistory()
 console.log(history, 'historyyyy')
@@ -11,6 +12,7 @@ console.log(history, 'historyyyy')
  */
 const reducers = combineReducers({
   routing: routerReducer,
+  authReducer
 })
 
 /**
@@ -47,10 +49,10 @@ const thunk = store => next => action =>
 
 const middleware = [
   routerMiddleware(history),
-  logger,
-  crashReporter,
+  api,
   thunk,
-  api
+  logger,
+  crashReporter
 ].filter(Boolean)
 
 /**

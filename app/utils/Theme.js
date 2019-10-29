@@ -32,8 +32,11 @@ export default class Theme {
         defaultFontSize: 14,
         smallFontSize: 12,
         spacing: 8,
+        logoTextIconWidth: 75,
+        logoTextIconHeight: 35,
       },
       typography: {
+        useNextVariants: true,
         fontFamily: 'Roboto, sans-serif',
         secondaryFontFamily: 'Roboto, Medium',
         thirdFontFamily: 'Roboto, Bold',
@@ -55,10 +58,19 @@ export default class Theme {
         drawer: 901,
         overlay: 900,
       },
+      shadows: [
+        '0px 4px 8px 0px rgba(0, 0, 0, 0.14)',
+        '0px 3px 7px 0px rgba(0, 0, 0, 0.24)',
+        '0px 7px 13px 0px rgba(0, 0, 0, 0.17)',
+        '0px 18px 32px 0px rgba(0, 0, 0, 0.47)',
+        ...Array(21).fill('none').map((n, index) => {
+          return `0px ${4 * index}px ${8 * index}px 0px rgba(0, 0, 0, 0.14)`
+        })
+      ]
     }
 
     let darkTheme = {
-      type: 'light',
+      type: 'dark',
       palette: {
         primaryColor: '#3CB9E2',
         secondaryColor: '#34576A',
@@ -87,6 +99,7 @@ export default class Theme {
         spacing: 8,
       },
       typography: {
+        useNextVariants: true,
         fontFamily: 'Roboto, sans-serif',
         secondaryFontFamily: 'Roboto, Medium',
         thirdFontFamily: 'Roboto, Bold',
@@ -108,6 +121,11 @@ export default class Theme {
         drawer: 901,
         overlay: 900,
       },
+    }
+
+    return {
+      ...lightTheme,
+      // ...darkTheme,
     }
   }
 }
