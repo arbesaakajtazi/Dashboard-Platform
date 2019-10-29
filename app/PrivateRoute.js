@@ -3,16 +3,20 @@
  */
 import React, {Component} from 'react'
 import {Route, Redirect} from 'react-router'
-import auth from 'auth'
+import {connect} from 'react-redux'
 
 class ProtectedRoute extends Component {
   render() {
-    const {component: Component, ...rest} = this.props
+    const {data: dataProp, component: Component, ...rest} = this.props
+
+    let data = dataProp || {}
+    let isAuthenticated = data.user.isLoggedIn
+    console.log(isAuthenticated, 'isAuthenticated')
     return (
       <Route
         {...rest}
         render={props => {
-          if (auth.isAuthenticated()) {
+          if (isAuthenticated) {
             return <Component {...props}/>
           } else {
             return (
@@ -31,5 +35,10 @@ class ProtectedRoute extends Component {
     )
   }
 }
+const mapStateToProps = (store) => {
+  return {
+    data: store.authReducer
+  }
+}
 
-export default ProtectedRoute
+export default connect(mapStateToProps, null)(ProtectedRoute)

@@ -1,6 +1,5 @@
 import 'whatwg-fetch'
 import {API_URL} from 'Constants'
-console.log(API_URL,'API_URL')
 
 const callApi = ({ endpoint, options: optionsFromCall = {} }, store) => {
   const url = API_URL + endpoint

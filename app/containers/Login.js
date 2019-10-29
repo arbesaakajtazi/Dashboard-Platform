@@ -10,9 +10,9 @@ import {fade} from '@material-ui/core/styles/colorManipulator'
 import LogoTextIcon from 'presentations/Icons/LogoTextIcon'
 import {connect} from 'react-redux'
 import {login} from 'reducers/Auth/AuthActions'
-import authentication from "../reducers/Auth/Auth";
+import { Redirect } from "react-router-dom";
 
-//TODO: Make this a component if needed once more
+//TODO: Make TextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
   root: {
     width: 300,
@@ -91,7 +91,9 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
 class Login extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
+    message: '',
+    loggedInState: false,
   }
 
   handleChange = (event) => {
@@ -99,6 +101,14 @@ class Login extends Component {
     this.setState({
       [name]: value
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps.data.isLoggedIn !== this.props.data.isLoggedIn && this.props.data.isLoggedIn){
+       this.setState({
+         loggedInState: this.props.data.isLoggedIn
+       })
+    }
   }
 
   onSubmitHandler = (event) => {
@@ -110,9 +120,13 @@ class Login extends Component {
     }
   }
 
+
   render() {
     const {classes} = this.props
-    const {username, password} = this.state
+    const {username, password, loggedInState} = this.state
+    if (loggedInState) {
+      return  <Redirect to='/'/>
+    }
     return (
       <Wrapper>
         <div className={classes.root}>
@@ -158,7 +172,7 @@ class Login extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    isAuthenticated: store.authReducer.isAuthenticated
+    data: store.authReducer.user
   }
 }
 

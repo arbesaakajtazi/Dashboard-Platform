@@ -21,6 +21,23 @@ export const loginError = (error) => {
   }
 }
 
+export const logout = () => {
+  return {
+    type: ACTION_TYPES.ACTION_LOGOUT
+  }
+}
+
+export const validateSession = () => {
+  return {
+    type: ACTION_TYPES.VALIDATE_SESSION
+  }
+}
+
+export const clearSession = () => {
+  return {
+    type: ACTION_TYPES.CLEAR_SESSION
+  }
+}
 
 export const login = (username, password) => {
   return (dispatch) => {
@@ -37,11 +54,14 @@ export const login = (username, password) => {
         }
       }
     }).then((user) => {
-      dispatch(success(user))
-      return user
-    }, (error) => {
-      dispatch(loginError(error))
-      return error
+        dispatch(success(user))
+        return user
+      }, (error) => {
+        dispatch(loginError(error))
+        return error
+      }).then((session) => {
+      dispatch(validateSession())
+      return session
     })
   }
 }

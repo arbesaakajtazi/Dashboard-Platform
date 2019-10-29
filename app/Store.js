@@ -3,9 +3,11 @@ import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
 import authReducer from 'reducers/Auth/Auth'
+import {createSession} from 'redux-session'
+import {CLEAR_SESSION} from 'reducers/Auth/AuthActionTypes'
 
 const history = createBrowserHistory()
-console.log(history, 'historyyyy')
+console.log(history, 'el history')
 
 /**
  * combing the reducers
@@ -13,6 +15,22 @@ console.log(history, 'historyyyy')
 const reducers = combineReducers({
   routing: routerReducer,
   authReducer
+})
+
+/**
+ * CreateSession for user
+ */
+const session = createSession({
+  ns: 'dashboardPlatform',
+  throttle: 0,
+  selectState(state) {
+    return {
+      user: state.authReducer
+    }
+  },
+  clearStorage(action) {
+    return action.type === CLEAR_SESSION
+  }
 })
 
 /**

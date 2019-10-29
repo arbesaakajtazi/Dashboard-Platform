@@ -52,8 +52,7 @@ class PageNotFound extends Component {
     }
   }
   render() {
-    const {classes, goBack} = this.props
-    console.log(goBack, "GOBACK")
+    const {classes} = this.props
     return (
       <Wrapper>
         <div className={classes.root}>
