@@ -7,10 +7,10 @@ export const request = () => {
   }
 }
 
-export const success = (user) => {
+export const success = (session) => {
   return {
     type: ACTION_TYPES.LOGIN_SUCCESS,
-    user
+    session
   }
 }
 
@@ -59,10 +59,7 @@ export const login = (username, password) => {
       }, (error) => {
         dispatch(loginError(error))
         return error
-      }).then((session) => {
-      dispatch(validateSession())
-      return session
-    })
+      })
   }
 }
 

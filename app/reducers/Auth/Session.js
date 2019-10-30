@@ -2,8 +2,7 @@ import ACTION_TYPES from 'reducers/Auth/AuthActionTypes'
 import moment from 'moment'
 
 let defaultState = {
-  isLoggedIn: false,
-  isValidated: false
+  isLoggedIn: false
 }
 
 const authentication = (state = defaultState, action) => {
@@ -11,20 +10,16 @@ const authentication = (state = defaultState, action) => {
     case ACTION_TYPES.LOGIN_REQUEST:
       return {
         ...state,
-        session: {...action.session, receivedAt: moment().valueOf()},
+        receivedAt: moment().valueOf(),
         isLoggedIn: false
       }
     case ACTION_TYPES.LOGIN_SUCCESS:
-      return state = {
-        isLoggedIn: true,
-        token: action.user.token
+      return {
+        ...action.session,
+        isLoggedIn: true
       }
     case ACTION_TYPES.LOGIN_FAILURE:
-    case ACTION_TYPES.VALIDATE_SESSION:
-      return {
-        ...state,
-        isValidated: true
-      }
+      return
     case ACTION_TYPES.ACTION_LOGOUT:
       return defaultState
     case 'LOAD_STORED_STATE':
@@ -36,10 +31,4 @@ const authentication = (state = defaultState, action) => {
   }
 }
 
-const authReducer = (state = {}, action) => {
-  return {
-    user: authentication(state.user, action)
-  }
-}
-
-export default authReducer
+export default authentication
