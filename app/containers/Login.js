@@ -9,8 +9,9 @@ import {Button, TextField} from '@material-ui/core'
 import {fade} from '@material-ui/core/styles/colorManipulator'
 import LogoTextIcon from 'presentations/Icons/LogoTextIcon'
 import {connect} from 'react-redux'
-import {login} from 'reducers/Auth/AuthActions'
-import { Redirect } from "react-router-dom";
+import {login} from 'reducers/Auth/SessionActions'
+import {replace} from 'react-router-redux'
+import authentication from "../reducers/Auth/Session";
 
 //TODO: Make TextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
@@ -75,7 +76,8 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
   actionWrapper: {
     padding: `0px ${size.spacing * 4}px  ${size.spacing * 5}px`,
     display: 'flex',
-    justifyContent: 'center',
+    flexFlow: 'column nowrap',
+    alignItems: 'center',
   },
   btn: {
     backgroundColor: palette.primaryColor,
@@ -85,6 +87,12 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     '&:hover': {
       backgroundColor: fade(palette.primaryColor, 0.85)
     }
+  },
+  formMessage: {
+    color: palette.danger,
+    fontFamily: typography.fontFamily,
+    fontSize: size.smallFontSize,
+    paddingTop: size.spacing * 2,
   }
 })
 
@@ -96,6 +104,14 @@ class Login extends Component {
     loggedInState: false,
   }
 
+  componentDidUpdate() {
+    const {location, session, history} = this.props
+    let {from} = location.state || {from: {pathname: "/"}}
+    if (session.authenticated){
+      history.replace(from)
+    }
+  }
+
   handleChange = (event) => {
     const {name, value} = event.target
     this.setState({
@@ -103,30 +119,26 @@ class Login extends Component {
     })
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps.data.isLoggedIn !== this.props.data.isLoggedIn && this.props.data.isLoggedIn){
-       this.setState({
-         loggedInState: this.props.data.isLoggedIn
-       })
-    }
-  }
 
   onSubmitHandler = (event) => {
     event.preventDefault(event)
-    const {login} = this.props
+    const {login, redirect} = this.props
     const {username, password} = this.state
     if (username && password) {
-      login(username, password)
+      login(username, password).then(() => {
+        redirect("/", {})
+      })
+    } else {
+      this.setState({
+        message: 'Please fill out the form!'
+      })
     }
   }
 
 
   render() {
     const {classes} = this.props
-    const {username, password, loggedInState} = this.state
-    if (loggedInState) {
-      return  <Redirect to='/'/>
-    }
+    const {username, password, message} = this.state
     return (
       <Wrapper>
         <div className={classes.root}>
@@ -163,6 +175,7 @@ class Login extends Component {
             >
               Login
             </Button>
+            <div className={classes.formMessage}>{message}</div>
           </div>
         </div>
       </Wrapper>
@@ -172,12 +185,18 @@ class Login extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    data: store.authReducer.user
+    session: store.session
   }
 }
 
-const mapDispatchToProps = {
-  login
-}
+const mapDispatchToProps = (dispatch) => ({
+  login: (username, password) => dispatch(login(username, password)),
+  redirect: (where, query) => {
+    dispatch(replace({
+      pathname: where,
+      query: query
+    }))
+  }
+})
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Login))

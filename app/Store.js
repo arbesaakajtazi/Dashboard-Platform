@@ -2,35 +2,24 @@ import {applyMiddleware, combineReducers, createStore} from 'redux'
 import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
-import authReducer from 'reducers/Auth/Auth'
-import {createSession} from 'redux-session'
-import {CLEAR_SESSION} from 'reducers/Auth/AuthActionTypes'
+import sessionAuthReducer from 'reducers/Auth/Session'
+import {sessionReducer} from 'redux-react-session'
+import {sessionService} from 'redux-react-session'
 
 const history = createBrowserHistory()
 console.log(history, 'el history')
+
+/**
+ * CreateSession for user
+ */
 
 /**
  * combing the reducers
  */
 const reducers = combineReducers({
   routing: routerReducer,
-  authReducer
-})
-
-/**
- * CreateSession for user
- */
-const session = createSession({
-  ns: 'dashboardPlatform',
-  throttle: 0,
-  selectState(state) {
-    return {
-      user: state.authReducer
-    }
-  },
-  clearStorage(action) {
-    return action.type === CLEAR_SESSION
-  }
+  sessionAuthReducer,
+  session: sessionReducer,
 })
 
 /**
@@ -79,6 +68,8 @@ const middleware = [
 export {history}
 
 const store = createStore(reducers, applyMiddleware(...middleware))
+
+sessionService.initSessionService(store)
 
 /**
  * The redux store which combines all the reducers

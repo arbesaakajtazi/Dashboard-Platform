@@ -7,12 +7,12 @@ import {connect} from 'react-redux'
 
 class ProtectedRoute extends Component {
   render() {
-    const {data: dataProp, component: Component, ...rest} = this.props
-
-    let data = dataProp || {}
-    let isAuthenticated = data.user.isLoggedIn
+    const {session, component: Component, ...rest} = this.props
+    console.log('current session', session)
+    let isAuthenticated = session.authenticated
     console.log(isAuthenticated, 'isAuthenticated')
     return (
+      session.checked &&
       <Route
         {...rest}
         render={props => {
@@ -35,9 +35,10 @@ class ProtectedRoute extends Component {
     )
   }
 }
+
 const mapStateToProps = (store) => {
   return {
-    data: store.authReducer
+    session: store.session
   }
 }
 

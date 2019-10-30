@@ -1,5 +1,6 @@
-import ACTION_TYPES from 'reducers/Auth/AuthActionTypes'
+import ACTION_TYPES from 'reducers/Auth/SessionActionTypes'
 import {CALL_API} from 'middleware/Api'
+import {sessionService} from 'redux-react-session'
 
 export const request = () => {
   return {
@@ -27,18 +28,6 @@ export const logout = () => {
   }
 }
 
-export const validateSession = () => {
-  return {
-    type: ACTION_TYPES.VALIDATE_SESSION
-  }
-}
-
-export const clearSession = () => {
-  return {
-    type: ACTION_TYPES.CLEAR_SESSION
-  }
-}
-
 export const login = (username, password) => {
   return (dispatch) => {
     dispatch(request())
@@ -54,12 +43,19 @@ export const login = (username, password) => {
         }
       }
     }).then((user) => {
-        dispatch(success(user))
-        return user
-      }, (error) => {
-        dispatch(loginError(error))
-        return error
-      })
+      sessionService.saveSession(user)
+      console.log('saved token', user)
+      dispatch(success(user))
+      return user
+    }, (error) => {
+      dispatch(loginError(error))
+      return error
+    }).then(() => {
+      sessionService.saveUser(username)
+    }, error => {
+      dispatch(loginError(error))
+      return error
+    })
   }
 }
 

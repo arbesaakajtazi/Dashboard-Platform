@@ -10,6 +10,7 @@ export default class Theme {
         primaryColor: '#3CB9E2',
         secondaryColor: '#C3EAF7',
         thirdColor: '#D8F1F9',
+        danger: '#e93d3d',
         bgColor: '#EAEFF1',
         navBarBgColor: '#293642',
         modalBg: '#283642',
