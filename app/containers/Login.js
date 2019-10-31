@@ -183,7 +183,7 @@ class Login extends Component {
               Login
             </Button>
             <div className={classes.formMessage}>{error}</div>
-            <div className={classes.formMessage}>{message}</div>
+            {message && <div className={classes.formMessage}>{message}</div>}
           </div>
         </div>
       </Wrapper>

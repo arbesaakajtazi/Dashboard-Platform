@@ -11,7 +11,7 @@ const authentication = (state = [], action) => {
     case ACTION_TYPES.LOGIN_SUCCESS:
       return {
         ...state,
-        message: 'good'
+        message: null
       }
     case ACTION_TYPES.LOGIN_FAILURE:
       return {
