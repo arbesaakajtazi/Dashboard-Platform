@@ -58,15 +58,5 @@ export const login = (username, password) => {
   }
 }
 
-// export const logout = () => {
-//   return dispatch => {
-//     dispatch(logout()).then(() => {
-//       sessionService.deleteSession();
-//       sessionService.deleteUser();
-//     })
-//   }
-// }
-
-
 
 

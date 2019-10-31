@@ -1,8 +1,6 @@
 import ACTION_TYPES from 'reducers/Auth/SessionActionTypes'
 import moment from 'moment'
 
-
-
 const authentication = (state = [], action) => {
   switch (action.type) {
     case ACTION_TYPES.LOGIN_REQUEST:
@@ -16,7 +14,9 @@ const authentication = (state = [], action) => {
         message: 'good'
       }
     case ACTION_TYPES.LOGIN_FAILURE:
-      return action.error
+      return {
+        message: `Your username or password didn't match!`
+      }
     case ACTION_TYPES.ACTION_LOGOUT:
       return {
         ...state,

@@ -8,6 +8,7 @@ import store, {history} from 'Store'
 import {Route, Router, Switch, Link} from 'react-router-dom'
 import ThemeProvider from 'utils/ThemeProvider'
 import CssBaseline from '@material-ui/core/CssBaseline'
+
 const Login = lazy(() => import('containers/Login'))
 const Dashboard = lazy(() => import('containers/Dashboard'))
 import PrivateRoute from 'PrivateRoute'

@@ -184,7 +184,6 @@ class Login extends Component {
             </Button>
             <div className={classes.formMessage}>{error}</div>
             <div className={classes.formMessage}>{message}</div>
-            <LoadingIndicator/>
           </div>
         </div>
       </Wrapper>
