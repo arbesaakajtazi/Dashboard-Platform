@@ -8,12 +8,20 @@ const authentication = (state = [], action) => {
     case ACTION_TYPES.LOGIN_REQUEST:
       return {
         ...state,
-        receivedAt: moment().valueOf(),
-        isLoggedIn: false
+        receivedAt: moment().valueOf()
       }
     case ACTION_TYPES.LOGIN_SUCCESS:
+      return {
+        ...state,
+        message: 'good'
+      }
     case ACTION_TYPES.LOGIN_FAILURE:
+      return action.error
     case ACTION_TYPES.ACTION_LOGOUT:
+      return {
+        ...state,
+        message: null
+      }
     default:
       return state
   }

@@ -11,7 +11,7 @@ import LogoTextIcon from 'presentations/Icons/LogoTextIcon'
 import {connect} from 'react-redux'
 import {login} from 'reducers/Auth/SessionActions'
 import {replace} from 'react-router-redux'
-import authentication from "../reducers/Auth/Session";
+import LoadingIndicator from "../presentations/Icons/loadingIndicator";
 
 //TODO: Make TextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
@@ -101,13 +101,13 @@ class Login extends Component {
     username: '',
     password: '',
     message: '',
-    loggedInState: false,
+    loggedInState: false
   }
 
   componentDidUpdate() {
     const {location, session, history} = this.props
     let {from} = location.state || {from: {pathname: "/"}}
-    if (session.authenticated){
+    if (session.authenticated) {
       history.replace(from)
     }
   }
@@ -135,10 +135,15 @@ class Login extends Component {
     }
   }
 
+  onKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      this.onSubmitHandler(event)
+    }
+  }
 
   render() {
-    const {classes} = this.props
-    const {username, password, message} = this.state
+    const {classes, error, session} = this.props
+    const {message} = this.state
     return (
       <Wrapper>
         <div className={classes.root}>
@@ -154,8 +159,9 @@ class Login extends Component {
                        InputLabelProps={{classes: {focused: classes.focused}}}
                        name="username"
                        label="username"
-                       value={username}
+                       value={session.username}
                        onChange={this.handleChange}
+                       onKeyPress={this.onKeyPress}
             />
             <TextField className={classes.textField}
                        InputProps={{classes: {underline: classes.underline, disabled: classes.disabled}}}
@@ -163,8 +169,9 @@ class Login extends Component {
                        name="password"
                        label="password"
                        type="password"
-                       value={password}
+                       value={session.password}
                        onChange={this.handleChange}
+                       onKeyPress={this.onKeyPress}
             />
           </div>
           <div className={classes.actionWrapper}>
@@ -175,7 +182,9 @@ class Login extends Component {
             >
               Login
             </Button>
+            <div className={classes.formMessage}>{error}</div>
             <div className={classes.formMessage}>{message}</div>
+            <LoadingIndicator/>
           </div>
         </div>
       </Wrapper>
@@ -185,7 +194,8 @@ class Login extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    session: store.session
+    session: store.session,
+    error: store.sessionAuthReducer.message
   }
 }
 

@@ -44,19 +44,29 @@ export const login = (username, password) => {
       }
     }).then((user) => {
       sessionService.saveSession(user)
-      console.log('saved token', user)
       dispatch(success(user))
       return user
     }, (error) => {
       dispatch(loginError(error))
       return error
     }).then(() => {
-      sessionService.saveUser(username)
+      sessionService.saveUser({username})
     }, error => {
       dispatch(loginError(error))
       return error
     })
   }
 }
+
+// export const logout = () => {
+//   return dispatch => {
+//     dispatch(logout()).then(() => {
+//       sessionService.deleteSession();
+//       sessionService.deleteUser();
+//     })
+//   }
+// }
+
+
 
 

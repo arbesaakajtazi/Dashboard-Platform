@@ -3,8 +3,7 @@ import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
 import sessionAuthReducer from 'reducers/Auth/Session'
-import {sessionReducer} from 'redux-react-session'
-import {sessionService} from 'redux-react-session'
+import {sessionReducer, sessionService} from 'redux-react-session'
 
 const history = createBrowserHistory()
 console.log(history, 'el history')
