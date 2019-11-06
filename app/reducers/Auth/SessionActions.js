@@ -42,18 +42,12 @@ export const login = (username, password) => {
           body: JSON.stringify({username, password}),
         }
       }
-    }).then((user) => {
-      sessionService.saveSession(user)
-      dispatch(success(user))
-      return user
-    }, (error) => {
-      dispatch(loginError(error))
-      return error
-    }).then(() => {
-      sessionService.saveUser({username})
-    }, error => {
-      dispatch(loginError(error))
-      return error
+    }).then((token) => {
+      sessionService.saveSession({token})
+      dispatch(success(token))
+      return token
+    }).then(({token}) => {
+      sessionService.saveUser({username, token})
     })
   }
 }

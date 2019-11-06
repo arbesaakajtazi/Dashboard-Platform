@@ -10,10 +10,10 @@ import ThemeProvider from 'utils/ThemeProvider'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 const Login = lazy(() => import('containers/Login'))
-const Dashboard = lazy(() => import('containers/Dashboard'))
+const Dashboard = lazy(() => import('containers/Dashboards/Dashboard'))
 import PrivateRoute from 'PrivateRoute'
 import PageNotFound from 'containers/Pages/Common/PageNotFound'
-import LoadingIndicator from 'presentations/Icons/loadingIndicator'
+import LoadingIndicator from 'presentations/Icons/LoadingIndicator'
 
 const App = () => {
   return (

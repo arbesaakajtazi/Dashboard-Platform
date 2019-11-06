@@ -1,8 +1,10 @@
 import 'whatwg-fetch'
 import {API_URL} from 'Constants'
+import {sessionService} from 'redux-react-session'
 
 const callApi = ({ endpoint, options: optionsFromCall = {} }, store) => {
   const url = API_URL + endpoint
+
   console.log(`calling API: ${url}`)
   let options = {
     // default params
@@ -11,11 +13,24 @@ const callApi = ({ endpoint, options: optionsFromCall = {} }, store) => {
     credentials: 'same-origin', // include, *same-origin, omit
     headers: {
       'Content-Type': 'application/json',
+      // 'Authorization': `Bearer ${token}`
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: 'follow', // manual, *follow, error
     referrer: 'no-referrer', // no-referrer, *client,
     ...optionsFromCall
+  }
+  let session = store.getState().session
+  //Override headers to include Authorization
+  if (session.authenticated) {
+    let token = store.getState().session.user.token
+    options = {
+      ...options,
+      headers: {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`
+      }
+    }
   }
   return fetch(url, options)
     .then((response) => {

@@ -3,6 +3,7 @@ import {routerMiddleware, routerReducer} from 'react-router-redux'
 import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
 import sessionAuthReducer from 'reducers/Auth/Session'
+import dashboards from 'reducers/Dashboards/Dashboards'
 import {sessionReducer, sessionService} from 'redux-react-session'
 
 const history = createBrowserHistory()
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   routing: routerReducer,
   sessionAuthReducer,
   session: sessionReducer,
+  dashboards,
 })
 
 /**

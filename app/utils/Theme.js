@@ -38,9 +38,6 @@ export default class Theme {
       },
       typography: {
         useNextVariants: true,
-        fontFamily: 'Roboto, sans-serif',
-        secondaryFontFamily: 'Roboto, Medium',
-        thirdFontFamily: 'Roboto, Bold',
         weight: {
           black: 900,
           bold: 700,
@@ -61,10 +58,16 @@ export default class Theme {
       },
       shadows: [
         '0px 4px 8px 0px rgba(0, 0, 0, 0.14)',
+        '0px 1px 1px 0px rgba(0, 0, 0, 0.16)',
+        '0px 3px 6px 0px rgba(0, 0, 0, 0.16)',
+        '0px 3px 10px 0px rgba(0, 0, 0, 0.16)',
+        '0px 4px 5px 0px rgba(0, 0, 0, 0.16)',
+        '0px 5px 20px 0px rgba(0, 0, 0, 0.22)',
         '0px 3px 7px 0px rgba(0, 0, 0, 0.24)',
         '0px 7px 13px 0px rgba(0, 0, 0, 0.17)',
+        '10px 0px 30px 0px rgba(0, 0, 0, 0.30)',
         '0px 18px 32px 0px rgba(0, 0, 0, 0.47)',
-        ...Array(21).fill('none').map((n, index) => {
+        ...Array(15).fill('none').map((n, index) => {
           return `0px ${4 * index}px ${8 * index}px 0px rgba(0, 0, 0, 0.14)`
         })
       ]

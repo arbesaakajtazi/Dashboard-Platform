@@ -11,9 +11,8 @@ import LogoTextIcon from 'presentations/Icons/LogoTextIcon'
 import {connect} from 'react-redux'
 import {login} from 'reducers/Auth/SessionActions'
 import {replace} from 'react-router-redux'
-import LoadingIndicator from "../presentations/Icons/loadingIndicator";
 
-//TODO: Make TextField a component if needed once more
+//TODO: Make ExtendedTextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
   root: {
     width: 300,
@@ -90,7 +89,6 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
   },
   formMessage: {
     color: palette.danger,
-    fontFamily: typography.fontFamily,
     fontSize: size.smallFontSize,
     paddingTop: size.spacing * 2,
   }
@@ -104,11 +102,21 @@ class Login extends Component {
     loggedInState: false
   }
 
-  componentDidUpdate() {
-    const {location, session, history} = this.props
+ /* componentDidUpdate() {
+    /!*const {location, session, history} = this.props
     let {from} = location.state || {from: {pathname: "/"}}
     if (session.authenticated) {
       history.replace(from)
+    }*!/
+
+  }*/
+
+  componentDidUpdate(prevProps, prevState) {
+    const {session, redirect} = this.props
+    const {user: {token = ''} = {}} = session
+
+    if (token) {
+      redirect('/', {})
     }
   }
 

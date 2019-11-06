@@ -2,15 +2,17 @@
  * Created by ArbesaKajtazi on 22/10/2019.
  */
 import React, {Component} from 'react'
-import {Route, Redirect} from 'react-router'
+import {Route, Redirect} from 'react-router-dom'
 import {connect} from 'react-redux'
+import {replace} from "react-router-redux";
 
 class ProtectedRoute extends Component {
+
   render() {
     const {session, component: Component, ...rest} = this.props
-    console.log('current session', session)
+    const {user: {token = ''} = {}} = session
+    // console.log('ProtectedRoute the session', session)
     let isAuthenticated = session.authenticated
-    console.log(isAuthenticated, 'isAuthenticated')
     return (
       session.checked &&
       <Route
@@ -42,4 +44,12 @@ const mapStateToProps = (store) => {
   }
 }
 
-export default connect(mapStateToProps, null)(ProtectedRoute)
+const mapDispatchToProps = dispatch => ({
+  redirect: (where, query) => {
+    dispatch(replace({
+      pathname: where,
+      query: query
+    }))
+  }
+})
+export default connect(mapStateToProps, mapDispatchToProps)(ProtectedRoute)
