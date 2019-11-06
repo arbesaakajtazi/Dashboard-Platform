@@ -4,6 +4,8 @@ const dashboards = (state = [], action) => {
   switch (action.type) {
     case ACTION_TYPES.RECEIVE_DASHBOARDS:
       return action.data
+    case ACTION_TYPES.DELETE_DASHBOARD:
+      return state.filter(next => next.id !== action.dashboard.id)
     default:
       return state
   }
@@ -35,9 +37,7 @@ export const filteredDashboards = (state) => {
   const search = state.filter
   return state.dashboards.filter(next => {
     const name = next.name.toLocaleLowerCase()
-    const description = next.description.toLocaleLowerCase()
-    return name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
-      description.toLocaleLowerCase().includes(search.toLocaleString())
+    return name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
   })
 }
 

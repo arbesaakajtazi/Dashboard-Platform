@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
+import {connect} from 'react-redux'
 import Card from 'presentations/Card/Cardd'
 import moment from 'moment'
 import DotsIcon from 'presentations/Icons/DotsIcon'
-import {IconButton, Popover, Popper} from '@material-ui/core'
+import {IconButton, Popover} from '@material-ui/core'
 import EditIcon from 'presentations/Icons/EditIcon'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
+import {deleteDashboard} from 'reducers/Dashboards/DashboardsActions'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {},
@@ -105,7 +107,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   paper: {
     height: 80,
     width: 95,
-    padding: `${size.spacing *2}px`,
+    padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
   }
@@ -117,6 +119,11 @@ class DashboardsList extends Component {
     anchorEl: null
   }
 
+  onDelete = (item) => {
+    const {deleteDashboard} = this.props
+    deleteDashboard(item)
+  }
+
   onOpen = (event) => {
     this.setState({anchorEl: event.currentTarget})
   }
@@ -126,7 +133,7 @@ class DashboardsList extends Component {
   }
 
   renderDashboards = (item) => {
-    const {classes, anchorOrigin, transformOrigin} = this.props
+    const {classes} = this.props
     const {anchorEl} = this.state
     const open = !!anchorEl
     return <Card key={item.id}>
@@ -146,7 +153,7 @@ class DashboardsList extends Component {
           onClose={this.onClose}
           open={open}
           anchorEl={anchorEl}
-          anchorOrigin={ {
+          anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right'
           }}
@@ -164,7 +171,7 @@ class DashboardsList extends Component {
             </div>
           </div>
           <div className={classes.delete}>
-            <IconButton className={classes.iconButton}>
+            <IconButton className={classes.iconButton} onClick={() => this.onDelete(item)}>
               <DeleteIcon/>
             </IconButton>
             <div>
@@ -210,4 +217,8 @@ class DashboardsList extends Component {
   }
 }
 
-export default withStyles(styles)(DashboardsList)
+const mapDispatchToProps = {
+  deleteDashboard
+}
+
+export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardsList))
