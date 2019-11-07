@@ -5,12 +5,13 @@ import React, {Component} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import LogoIcon from 'presentations/Icons/PrimeIcon'
 import Wrapper from 'presentations/Wrapper'
-import {Button, TextField} from '@material-ui/core'
+import {TextField} from '@material-ui/core'
 import {fade} from '@material-ui/core/styles/colorManipulator'
 import LogoTextIcon from 'presentations/Icons/LogoTextIcon'
 import {connect} from 'react-redux'
 import {login} from 'reducers/Auth/SessionActions'
 import {replace} from 'react-router-redux'
+import Button from 'presentations/Button/Button'
 
 //TODO: Make ExtendedTextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
@@ -79,10 +80,10 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     alignItems: 'center',
   },
   btn: {
-    backgroundColor: palette.primaryColor,
     minWidth: 140,
-    color: palette.common.white,
     boxShadow: 'none',
+    padding: `${size.spacing * 2}px`,
+    borderRadius: size.baseRadius,
     '&:hover': {
       backgroundColor: fade(palette.primaryColor, 0.85)
     }
@@ -102,14 +103,14 @@ class Login extends Component {
     loggedInState: false
   }
 
- /* componentDidUpdate() {
-    /!*const {location, session, history} = this.props
-    let {from} = location.state || {from: {pathname: "/"}}
-    if (session.authenticated) {
-      history.replace(from)
-    }*!/
+  /* componentDidUpdate() {
+     /!*const {location, session, history} = this.props
+     let {from} = location.state || {from: {pathname: "/"}}
+     if (session.authenticated) {
+       history.replace(from)
+     }*!/
 
-  }*/
+   }*/
 
   componentDidUpdate(prevProps, prevState) {
     const {session, redirect} = this.props
@@ -184,7 +185,8 @@ class Login extends Component {
           </div>
           <div className={classes.actionWrapper}>
             <Button
-              variant='contained'
+              variant='flat'
+              color='primary'
               className={classes.btn}
               onClick={this.onSubmitHandler}
             >

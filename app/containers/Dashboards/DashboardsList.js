@@ -75,7 +75,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     fontSize: size.smallFontSize,
     backgroundColor: palette.thirdColor,
     border: `1px solid ${palette.secondaryColor}`,
-    borderRadius: `${size.baseRadius * 7}`,
+    borderRadius: `${size.baseRadius * 7}px`,
     width: 95,
     padding: `${size.spacing}px ${size.spacing * 2}px`,
     marginRight: 10

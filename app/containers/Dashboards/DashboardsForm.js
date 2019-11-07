@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@material-ui/core'
+import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@material-ui/core'
 import Textarea from '@material-ui/core/InputBase/'
+import Button from 'presentations/Button/Button'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -88,7 +89,7 @@ class DashboardsForm extends Component {
   render() {
     const {classes} = this.props
     return (
-      <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
+      <Dialog open={false} className={classes.root} classes={{paper: classes.paper}}>
         <DialogTitle className={classes.dialogTitle}>
           Create new project
         </DialogTitle>
@@ -110,10 +111,10 @@ class DashboardsForm extends Component {
                     placeholder='Description'/>
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <Button color="secondary">
+          <Button variant='flat' color='default'>
             Cancel
           </Button>
-          <Button className={classes.saveBtn}>
+          <Button variant='flat' color='primary'>
             Save
           </Button>
         </DialogActions>

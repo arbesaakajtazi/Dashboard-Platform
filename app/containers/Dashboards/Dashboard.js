@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {sessionService} from 'redux-react-session'
 import Content from 'anatomy/Content'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Button from 'presentations/Buttons/AddButton'
+import Button from 'presentations/Button/Button'
 import {TextField} from '@material-ui/core'
 import FilterIcon from 'presentations/Icons/FilterIcon'
 import SearchIcon from 'presentations/Icons/SearchIcon'
@@ -14,7 +14,8 @@ import DashboardsList from 'containers/Dashboards/DashboardsList'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import {filter} from 'reducers/Dashboards/DashboardsActions'
-import DashboardsForm from "./DashboardsForm";
+import DashboardsForm from './DashboardsForm'
+import AddIcon from '@material-ui/icons/Add'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   // root: {},
@@ -103,6 +104,17 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     zIndex: 1,
     position: 'absolute',
     right: 5
+  },
+  addButton: {
+    border: 'none',
+    borderRadius: '100%',
+    width: 77,
+    height: 77,
+    padding: 0,
+    boxShadow: shadows[2],
+    '& svg': {
+      fontSize: 52,
+    },
   }
 })
 
@@ -159,7 +171,9 @@ class Dashboard extends Component {
         {/*<div>Welcome {username}</div>*/}
         {/*<button onClick={this.onLogOutClicked}>Log Out</button>*/}
         <div className={classes.dashboardBtn}>
-          <Button/>
+          <Button variant='flat' color='primary' className={classes.addButton}>
+            <AddIcon/>
+          </Button>
         </div>
       </Content>
     )
