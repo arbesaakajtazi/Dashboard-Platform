@@ -1,6 +1,5 @@
 import {CALL_API} from 'middleware/Api'
 import ACTION_TYPES from 'reducers/Dashboards/DashboardsActionTypes'
-import store from 'Store'
 
 export const requestDashboards = () => {
   return {

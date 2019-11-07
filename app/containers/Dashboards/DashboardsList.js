@@ -7,7 +7,7 @@ import DotsIcon from 'presentations/Icons/DotsIcon'
 import {IconButton, Popover} from '@material-ui/core'
 import EditIcon from 'presentations/Icons/EditIcon'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
-import {deleteDashboard} from 'reducers/Dashboards/DashboardsActions'
+import {deleteDashboards} from 'reducers/Dashboards/DashboardsActions'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {},
@@ -75,7 +75,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     fontSize: size.smallFontSize,
     backgroundColor: palette.thirdColor,
     border: `1px solid ${palette.secondaryColor}`,
-    borderRadius: 28,
+    borderRadius: `${size.baseRadius * 7}`,
     width: 95,
     padding: `${size.spacing}px ${size.spacing * 2}px`,
     marginRight: 10
@@ -120,8 +120,8 @@ class DashboardsList extends Component {
   }
 
   onDelete = (item) => {
-    const {deleteDashboard} = this.props
-    deleteDashboard(item)
+    const {deleteDashboards} = this.props
+    deleteDashboards(item)
   }
 
   onOpen = (event) => {
@@ -218,7 +218,7 @@ class DashboardsList extends Component {
 }
 
 const mapDispatchToProps = {
-  deleteDashboard
+  deleteDashboards
 }
 
 export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardsList))

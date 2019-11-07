@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {sessionService} from 'redux-react-session'
 import Content from 'anatomy/Content'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Button from 'presentations/Button/Button'
+import Button from 'presentations/Buttons/AddButton'
 import {TextField} from '@material-ui/core'
 import FilterIcon from 'presentations/Icons/FilterIcon'
 import SearchIcon from 'presentations/Icons/SearchIcon'
@@ -14,6 +14,7 @@ import DashboardsList from 'containers/Dashboards/DashboardsList'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import {filter} from 'reducers/Dashboards/DashboardsActions'
+import DashboardsForm from "./DashboardsForm";
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   // root: {},
@@ -31,7 +32,7 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     width: '100%',
     maxWidth: 233,
     border: `1px solid transparent`,
-    borderRadius: 4,
+    borderRadius: size.baseRadius,
     backgroundColor: palette.searchBg,
     '& label': {
       fontSize: size.defaultFontSize,
@@ -82,7 +83,7 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     padding: `${(size.spacing * 2) - 1}px ${(size.spacing * 2) - 2}px ${(size.spacing * 2) - 2}px`,
     width: 110,
     marginLeft: size.spacing,
-    borderRadius: 4,
+    borderRadius: size.baseRadius,
     fontSize: size.defaultFontSize,
     lineHeight: `${(size.spacing * 2) + 3}px`,
     boxShadow: shadows[3]
@@ -92,14 +93,17 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   },
   filterText: {
     paddingLeft: size.spacing
+  },
+  search: {
+    position: 'relative'
+  },
+  searchIcon: {
+    width: 25,
+    height: 45,
+    zIndex: 1,
+    position: 'absolute',
+    right: 5
   }
-  // searchIcon: {
-  //   width: 30,
-  //   height: 50,
-  //   zIndex: 1,
-  //   position: 'absolute',
-  //   left: '60%'
-  // }
 })
 
 class Dashboard extends Component {
@@ -132,6 +136,7 @@ class Dashboard extends Component {
                          className={classes.textField}
                          InputProps={{classes: {disabled: classes.disabled, underline: classes.underline}}}
                          InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}/>
+              <SearchIcon className={classes.searchIcon}/>
             </div>
             <div className={classes.filter}>
               <div className={classes.filterContent}>
@@ -150,6 +155,7 @@ class Dashboard extends Component {
           </div>
         </div>
         <DashboardsList items={dashboard}/>
+        <DashboardsForm/>
         {/*<div>Welcome {username}</div>*/}
         {/*<button onClick={this.onLogOutClicked}>Log Out</button>*/}
         <div className={classes.dashboardBtn}>

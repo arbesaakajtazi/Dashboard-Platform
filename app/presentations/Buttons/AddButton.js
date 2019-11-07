@@ -20,7 +20,7 @@ let styles = ({palette, shadows}) => ({
     }
   }
 })
-const Button = (props) => {
+const AddButton = (props) => {
   const {classes} = props
   return (
     <button className={classes.addButton}>
@@ -28,4 +28,4 @@ const Button = (props) => {
     </button>
   )
 }
-export default withStyles(styles)(Button)
+export default withStyles(styles)(AddButton)

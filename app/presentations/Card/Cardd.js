@@ -6,8 +6,8 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     backgroundColor: palette.common.white,
     width: `calc(33% - ${size.spacing * 2}px)`,
     boxShadow: shadows[4],
-    borderRadius: `${(size.spacing) - 4}px`,
-    margin: ` 0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
+    borderRadius: size.baseRadius,
+    margin: `0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
     minWidth: 300
   }
 })

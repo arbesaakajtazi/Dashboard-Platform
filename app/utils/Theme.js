@@ -35,8 +35,10 @@ export default class Theme {
         spacing: 8,
         logoTextIconWidth: 75,
         logoTextIconHeight: 35,
+        baseRadius: 4
       },
       typography: {
+        fontFamily: 'Roboto, sans-serif',
         useNextVariants: true,
         weight: {
           black: 900,

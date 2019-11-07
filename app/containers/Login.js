@@ -19,7 +19,7 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     height: 'auto',
     minHeight: size.spacing * 20,
     boxShadow: shadows[16],
-    borderRadius: size.spacing * 2,
+    borderRadius: size.baseRadius,
     backgroundColor: palette.common.white
   },
   header: {
