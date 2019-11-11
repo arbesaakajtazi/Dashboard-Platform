@@ -18,7 +18,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   header: {
     fontSize: size.smallFontSize,
-    color: palette.textColor,
+    color: palette.text.primary,
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'space-between',
@@ -35,7 +35,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
       top: 5,
       width: 4,
       left: 9,
-      backgroundColor: palette.textColor,
+      backgroundColor: palette.text.primary,
       borderRadius: '100%'
     }
   },
@@ -44,7 +44,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   dashboardTitle: {
     fontSize: size.headingFontSize,
-    color: palette.leadTextColor,
+    color: palette.text.default,
     fontWeight: typography.weight.bold,
     paddingBottom: `${size.spacing * 2}px`
   },
@@ -71,10 +71,10 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     flexFlow: 'row wrap'
   },
   children: {
-    color: palette.primaryColor,
+    color: palette.primary.main,
     fontSize: size.smallFontSize,
-    backgroundColor: palette.thirdColor,
-    border: `1px solid ${palette.secondaryColor}`,
+    backgroundColor: palette.secondary.light,
+    border: `1px solid ${palette.secondary.dark}`,
     borderRadius: `${size.baseRadius * 7}px`,
     width: 95,
     padding: `${size.spacing}px ${size.spacing * 2}px`,
@@ -84,6 +84,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: 0,
     '&:hover': {
       backgroundColor: 'transparent'
+    },
+    '& svg': {
+      height: 27
     }
   },
   editCard: {
@@ -110,6 +113,10 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
+    color:palette.leadTextColor,
+    fontFamily: typography.fontFamily,
+    fontSize: size.defaultFontSize,
+    textTransform: 'lowercase'
   }
 })
 
@@ -163,7 +170,10 @@ class DashboardsList extends Component {
           }}
           disableRestoreFocus>
           <div className={classes.edit}>
-            <IconButton className={classes.iconButton}>
+            <IconButton className={classes.iconButton} onClick={event => {
+              event.preventDefault()
+              this.props.onEdit(item)
+            }}>
               <EditIcon/>
             </IconButton>
             <div>

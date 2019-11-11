@@ -13,7 +13,6 @@ import {login} from 'reducers/Auth/SessionActions'
 import {replace} from 'react-router-redux'
 import Button from 'presentations/Button/Button'
 
-//TODO: Make ExtendedTextField a component if needed once more
 let styles = ({theme, size, palette, shadows, typography}) => ({
   root: {
     width: 300,
@@ -21,10 +20,11 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     minHeight: size.spacing * 20,
     boxShadow: shadows[16],
     borderRadius: size.baseRadius,
-    backgroundColor: palette.common.white
+    backgroundColor: palette.primary.contrastText
   },
   header: {
-    padding: `${size.spacing * 5}px  ${size.spacing * 4}px 0px`
+    padding: `${size.spacing * 5}px  ${size.spacing * 4}px 0px`,
+    color: palette.secondary.contrastText
   },
   logo: {
     display: 'flex',
@@ -53,23 +53,10 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
       fontSize: size.defaultFontSize
     },
     '& $focused': {
-      color: palette.primaryColor
-    },
-    '& $underline': {
-      color: palette.leadTextColor,
-      '&:hover:not($focused):not($disabled)': {
-        '&:before': {
-          borderBottom: `1px solid ${palette.textColor}`,
-        }
-      },
-      '&:after': {
-        borderBottom: `1px solid ${palette.primaryColor}`,
-      }
+      color: palette.primary.main
     }
   },
-  underline: {},
   focused: {},
-  disabled: {},
   contentWrapper: {
     padding: `${size.spacing * 5}px  ${size.spacing * 4}px`,
   },
@@ -85,11 +72,11 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     padding: `${size.spacing * 2}px`,
     borderRadius: size.baseRadius,
     '&:hover': {
-      backgroundColor: fade(palette.primaryColor, 0.85)
+      backgroundColor: fade(palette.primary.main, 0.85)
     }
   },
   formMessage: {
-    color: palette.danger,
+    color: palette.error.dark,
     fontSize: size.smallFontSize,
     paddingTop: size.spacing * 2,
   }
@@ -153,6 +140,7 @@ class Login extends Component {
   render() {
     const {classes, error, session} = this.props
     const {message} = this.state
+    console.log(message,'message')
     return (
       <Wrapper>
         <div className={classes.root}>
@@ -164,7 +152,6 @@ class Login extends Component {
           </div>
           <div className={classes.contentWrapper}>
             <TextField className={classes.textField}
-                       InputProps={{classes: {underline: classes.underline, disabled: classes.disabled}}}
                        InputLabelProps={{classes: {focused: classes.focused}}}
                        name="username"
                        label="username"
@@ -173,7 +160,6 @@ class Login extends Component {
                        onKeyPress={this.onKeyPress}
             />
             <TextField className={classes.textField}
-                       InputProps={{classes: {underline: classes.underline, disabled: classes.disabled}}}
                        InputLabelProps={{classes: {focused: classes.focused}}}
                        name="password"
                        label="password"

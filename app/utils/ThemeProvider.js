@@ -4,18 +4,25 @@
 import React, {Component} from 'react'
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles'
 import Theme from 'utils/Theme'
+import {connect} from 'react-redux'
 
 class ThemeProvider extends Component {
   render() {
-    const {children, theme: themeProp} = this.props
-    let theme = createMuiTheme(Theme.getTheme())
+    const {children, type} = this.props
+    let theme = createMuiTheme(Theme.getTheme(type))
     console.log('theme', theme)
     return (
-      <MuiThemeProvider theme={themeProp || theme}>
+      <MuiThemeProvider theme={theme}>
         {children}
       </MuiThemeProvider>
     )
   }
 }
 
-export default ThemeProvider
+const mapStateToProps= (store) => {
+  return {
+    type: store.theme
+  }
+}
+
+export default connect(mapStateToProps, null)(ThemeProvider)

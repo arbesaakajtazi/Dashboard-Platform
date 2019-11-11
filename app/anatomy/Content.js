@@ -12,7 +12,7 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
   content: {
     width: '100%',
     padding: `${(size.spacing * 7)-2}px  ${(size.spacing * 8)-4}px`,
-    backgroundColor: palette.bgColor,
+    backgroundColor: palette.secondary.main,
     overflow: 'auto'
   }
 })

@@ -11,10 +11,10 @@ import GroupDashboardsIcon from 'presentations/Icons/GroupDashboardsIcon'
 import ListDashboardsIcon from 'presentations/Icons/ListDashboardIcon'
 import {IconButton} from '@material-ui/core'
 import DashboardsList from 'containers/Dashboards/DashboardsList'
+import DashboardsForm from 'containers/Dashboards/DashboardsForm'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import {filter} from 'reducers/Dashboards/DashboardsActions'
-import DashboardsForm from './DashboardsForm'
 import AddIcon from '@material-ui/icons/Add'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
@@ -34,7 +34,7 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     maxWidth: 233,
     border: `1px solid transparent`,
     borderRadius: size.baseRadius,
-    backgroundColor: palette.searchBg,
+    backgroundColor: palette.background.main,
     '& label': {
       fontSize: size.defaultFontSize,
       color: palette.textColor,
@@ -45,42 +45,18 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     '& $shrink': {
       transform: `translate(0, 1.5px) scale(0.75)`,
     },
-    '& input': {
-      fontSize: size.defaultFontSize,
-      padding: `${size.spacing * 2}px`
-    },
     '& $focused': {
-      color: palette.textColor
-    },
-    '& $underline': {
-      color: palette.leadTextColor,
-      margin: 0,
-      '&:hover': {
-        border: 'none'
-      },
-      '&:hover:not($focused):not($disabled)': {
-        '&:before': {
-          borderBottom: 'none',
-        }
-      },
-      '&:after': {
-        borderBottom: 'none'
-      },
-      '&:before': {
-        border: 'none'
-      }
+      color: palette.text.primary,
     }
   },
-  underline: {},
   focused: {},
-  disabled: {},
   shrink: {},
   filterWrapper: {
     display: 'flex',
     flexFlow: 'row nowrap'
   },
   filter: {
-    background: palette.common.white,
+    background: palette.primary.contrastText,
     padding: `${(size.spacing * 2) - 1}px ${(size.spacing * 2) - 2}px ${(size.spacing * 2) - 2}px`,
     width: 110,
     marginLeft: size.spacing,
@@ -90,7 +66,8 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     boxShadow: shadows[3]
   },
   filterContent: {
-    display: 'flex'
+    display: 'flex',
+    color: palette.text.default
   },
   filterText: {
     paddingLeft: size.spacing
@@ -120,6 +97,11 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
 
 class Dashboard extends Component {
 
+  state = {
+    open: true,
+    editing: undefined
+  }
+
   componentDidMount() {
     const {fetchDashboards} = this.props
     fetchDashboards()
@@ -135,8 +117,38 @@ class Dashboard extends Component {
     filter(event.target.value)
   }
 
+  onRequestAdd = (event) => {
+    this.setState({
+      editing: {
+        id: 'new'
+      }
+    })
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState((prevState) => ({
+      open: !prevState.open
+    }))
+  }
+
+  onEdit = (item) => {
+    this.setState({
+      editing: item
+    })
+  }
+
+  onCancelClicked = (event) => {
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState({
+      editing: undefined
+    })
+  }
+
   render() {
     const {session: {user: {username = ''} = {}} = {}, classes, search, dashboard} = this.props
+    const {editing = {}} = this.state
     return (
       <Content>
         <div className={classes.header}>
@@ -146,7 +158,7 @@ class Dashboard extends Component {
                          value={search}
                          onChange={this.onChange}
                          className={classes.textField}
-                         InputProps={{classes: {disabled: classes.disabled, underline: classes.underline}}}
+                         variant='filled'
                          InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}/>
               <SearchIcon className={classes.searchIcon}/>
             </div>
@@ -166,12 +178,10 @@ class Dashboard extends Component {
             </IconButton>
           </div>
         </div>
-        <DashboardsList items={dashboard}/>
-        <DashboardsForm/>
-        {/*<div>Welcome {username}</div>*/}
-        {/*<button onClick={this.onLogOutClicked}>Log Out</button>*/}
+        <DashboardsList items={dashboard} onEdit={this.onEdit}/>
+        <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked}/>
         <div className={classes.dashboardBtn}>
-          <Button variant='flat' color='primary' className={classes.addButton}>
+          <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
             <AddIcon/>
           </Button>
         </div>

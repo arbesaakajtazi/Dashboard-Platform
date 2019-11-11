@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
-    backgroundColor: palette.common.white,
+    backgroundColor: palette.background.paper,
     width: `calc(33% - ${size.spacing * 2}px)`,
     boxShadow: shadows[4],
     borderRadius: size.baseRadius,

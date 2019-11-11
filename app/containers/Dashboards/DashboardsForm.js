@@ -1,120 +1,129 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@material-ui/core'
-import Textarea from '@material-ui/core/InputBase/'
 import Button from 'presentations/Button/Button'
+import {addDashboards, updateDashboards} from 'reducers/Dashboards/DashboardsActions'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
-    backgroundColor: palette.modalBg
+    backgroundColor: palette.primary.dark,
   },
   dialogTitle: {
-    '& h6': {
+    '& h2': {
       fontSize: size.displayFontSize,
       fontWeight: typography.weight.bold
     },
-    padding: `${(size.spacing * 5) + 4}px ${size.spacing * 6}px ${(size.spacing * 7) - 2}px`
+    padding: `${(size.spacing * 5) + 4}px ${size.spacing * 6}px ${(size.spacing * 7) - 2}px`,
+    color: palette.secondary.contrastText
   },
   paper: {
     width: `calc(33% - ${size.spacing * 2}px)`,
+    backgroundColor: palette.primary.contrastText
   },
   dialogContent: {
-    padding: `0px ${size.spacing * 6}px`
+    padding: `0px ${size.spacing * 6}px`,
+    overflow: 'hidden'
   },
   dialogActions: {
     padding: `${size.spacing * 2}px ${size.spacing * 6}px ${size.spacing * 7}px`,
     margin: 0
   },
-  textField: {
-    width: '100%',
-    border: `1px solid transparent`,
+  dialogActionsBtn: {
+    padding: size.spacing * 2,
     borderRadius: size.baseRadius,
-    backgroundColor: palette.searchBg,
-    '& label': {
-      fontSize: size.defaultFontSize,
-      color: palette.textColor,
-      lineHeight: `${(size.spacing * 2) + 3}px`,
-      transform: `translate(0, 16px) scale(1)`,
-      left: size.spacing * 2
-    },
-    '& $shrink': {
-      transform: `translate(0, 1.5px) scale(0.75)`,
-    },
-    '& input': {
-      fontSize: size.defaultFontSize,
-      padding: `${size.spacing * 2}px`
-    },
-    '& $focused': {
-      color: palette.textColor
-    },
-    '& $underline': {
-      color: palette.leadTextColor,
-      margin: 0,
-      '&:hover': {
-        border: 'none'
-      },
-      '&:hover:not($focused):not($disabled)': {
-        '&:before': {
-          borderBottom: 'none',
-        }
-      },
-      '&:after': {
-        borderBottom: 'none'
-      },
-      '&:before': {
-        border: 'none'
-      }
-    }
-  },
-  underline: {},
-  focused: {},
-  disabled: {},
-  shrink: {},
-  textArea: {
-    height: 200,
-    display: 'block',
-    background: palette.searchBg,
-    borderRadius: size.baseRadius,
-    padding: `${(size.spacing * 2) - 2}px ${size.spacing * 2}px`,
-    fontSize: size.defaultFontSize
-  },
-  saveBtn: {
-    backgroundColor: palette.primaryColor,
-    color: palette.common.white,
-    textTransform: 'none'
+    fontSize: size.defaultFontSize,
+    lineHeight: '19px'
   }
 })
 
 class DashboardsForm extends Component {
+
+  state = {
+    items: []
+  }
+
+  componentDidMount() {
+    this.setState({
+      item: this.props.item
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.item.id !== this.props.item.id && this.props.item) {
+      console.log('prevProps', prevProps.item)
+      console.log('thisProps', this.props.item)
+      this.setState({
+        item: this.props.item
+      })
+    }
+  }
+
+
+  onValueChanged = (event) => {
+    const {name, value} = event.target
+    this.setState((prevState) => ({
+      item: {
+        ...prevState.item,
+        [name]: value
+      }
+    }))
+  }
+
+  onSaveClicked = (event) => {
+    event.preventDefault()
+    const {addDashboards, updateDashboards, onCancelClicked} = this.props
+    const {item} = this.state
+    let isNew = this.state.item.id === 'new'
+    if (isNew) {
+      if (item.name && item.description) {
+        addDashboards(item)
+      }
+    } else {
+      updateDashboards(item)
+    }
+    onCancelClicked()
+  }
+
+  // onKeyPress = (event) => {
+  //   if (event.key === 'Enter') {
+  //     this.onSaveClicked(event)
+  //   }
+  // }
+
   render() {
-    const {classes} = this.props
+    const {classes, open, onCancelClicked} = this.props
+    const {item = {}} = this.state
     return (
-      <Dialog open={false} className={classes.root} classes={{paper: classes.paper}}>
+      <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
         <DialogTitle className={classes.dialogTitle}>
           Create new project
         </DialogTitle>
         <DialogContent className={classes.dialogContent}>
-          <TextField className={classes.textField}
-                     InputProps={{classes: {disabled: classes.disabled, underline: classes.underline}}}
-                     InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
-                     fullWidth
+          <TextField fullWidth
+                     variant='filled'
                      margin='normal'
                      name='name'
                      onChange={this.onValueChanged}
                      placeholder='Name'
+                     value={item.name}
           />
-          <Textarea className={classes.textArea}
-                    fullWidth
-                    margin='normal'
-                    name='description'
-                    onChange={this.onValueChanged}
-                    placeholder='Description'/>
+          <TextField fullWidth
+                     margin='normal'
+                     name='description'
+                     onChange={this.onValueChanged}
+                     placeholder='Description'
+                     value={item.description}
+                     multiline={true}
+                     variant='filled'
+                     rows={9}
+          />
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <Button variant='flat' color='default'>
+          <Button variant='flat' color='default' className={classes.dialogActionsBtn} onClick={onCancelClicked}>
             Cancel
           </Button>
-          <Button variant='flat' color='primary'>
+          <Button variant='flat' color='primary' className={classes.dialogActionsBtn} onClick={this.onSaveClicked}>
             Save
           </Button>
         </DialogActions>
@@ -123,4 +132,9 @@ class DashboardsForm extends Component {
   }
 }
 
-export default withStyles(styles)(DashboardsForm)
+const mapDispatchToProps = ({
+  addDashboards,
+  updateDashboards
+})
+
+export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardsForm))

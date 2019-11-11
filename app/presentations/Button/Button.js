@@ -7,7 +7,8 @@ const buttonVariants = {
   flat: 'flat'
 }
 const buttonColors = {
-  primary: 'primary',
+  default: 'default',
+  primary: 'primary'
 }
 
 let styles = ({size, palette, shadows, typography, zIndex, transitions}) => ({
@@ -19,12 +20,9 @@ let styles = ({size, palette, shadows, typography, zIndex, transitions}) => ({
     border: 'none',
     textAlign: 'center',
     justifyContent: 'center',
+    margin: 0,
     '&:focus': {
       outline: 'none'
-    },
-    '&$disabled': {
-      cursor: 'not-allowed',
-      opacity: 0.6
     },
     '&:active:not($disabled), &$pressed:not($disabled)': {
       transition: 'none',
@@ -35,14 +33,14 @@ let styles = ({size, palette, shadows, typography, zIndex, transitions}) => ({
       backgroundColor: 'transparent'
     },
     '&$default': {
-      color: palette.textColor,
+      color: palette.primary,
       backgroundColor: 'transparent'
     },
     '&$primary': {
-      color: palette.common.white,
-      backgroundColor: palette.primaryColor,
+      color: palette.primary.contrastText,
+      backgroundColor: palette.primary.main,
       '&:hover:not($disabled), &$pressed:not($disabled)': {
-        backgroundColor: palette.primaryColor
+        backgroundColor: palette.primary.main
       }
     },
   },

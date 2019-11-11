@@ -4,8 +4,19 @@ const dashboards = (state = [], action) => {
   switch (action.type) {
     case ACTION_TYPES.RECEIVE_DASHBOARDS:
       return action.data
+    case ACTION_TYPES.ADD_DASHBOARD:
+      return [...state, action.dashboard]
     case ACTION_TYPES.DELETE_DASHBOARD:
       return state.filter(next => next.id !== action.dashboard.id)
+    case ACTION_TYPES.UPDATE_DASHBOARD:
+      return state.map(next => {
+        if(next.id === action.dashboard.id){
+          return action.id
+        }
+        else {
+          return next
+        }
+      })
     default:
       return state
   }
@@ -29,7 +40,7 @@ const dashboardsReducer = (state = {}, action) => {
 
 /**
  * Filtered dashboards selector
- * @param store
+ * @param state
  * @returns {*}
  */
 

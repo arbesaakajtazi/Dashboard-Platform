@@ -28,9 +28,23 @@ export const filter = (text) => {
   }
 }
 
+export const addDashboard = (dashboard) => {
+  return {
+    type: ACTION_TYPES.ADD_DASHBOARD,
+    dashboard
+  }
+}
+
 export const deleteDashboard = (dashboard) => {
   return {
     type: ACTION_TYPES.DELETE_DASHBOARD,
+    dashboard
+  }
+}
+
+export const updateDashboard = (dashboard) => {
+  return {
+    type: ACTION_TYPES.UPDATE_DASHBOARD,
     dashboard
   }
 }
@@ -53,6 +67,26 @@ export const fetchDashboards = () => {
   }
 }
 
+export const addDashboards = (dashboard) => {
+  return (dispatch) => {
+    return dispatch({
+      [CALL_API]: {
+        endpoint: '/dashboard/',
+        options: {
+          method: 'POST',
+          body: JSON.stringify(dashboard),
+        }
+      }
+    }).then(dashboard => {
+      dispatch(addDashboard(dashboard))
+      return dashboard
+    }, error => {
+      dispatch(displayMessage(error))
+      return error
+    })
+  }
+}
+
 export const deleteDashboards = (dashboard) => {
   return (dispatch) => {
     dispatch(requestDashboards())
@@ -64,7 +98,7 @@ export const deleteDashboards = (dashboard) => {
         }
       }
     }).then((dashboard) => {
-      dispatch (deleteDashboard(dashboard))
+      dispatch(deleteDashboard(dashboard))
       return dashboard
     }, (error) => {
       dispatch(displayMessage(error))
@@ -72,4 +106,26 @@ export const deleteDashboards = (dashboard) => {
     })
   }
 }
+
+export const updateDashboards = (dashboard) => {
+  return (dispatch) => {
+    dispatch(requestDashboards())
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/dashboard/`,
+        options: {
+          method: 'PUT',
+          body: JSON.stringify(dashboard),
+        }
+      }
+    }).then((dashboard) => {
+      dispatch(updateDashboard(dashboard))
+      return dashboard
+    }, (error) => {
+      dispatch(displayMessage(error))
+      return error
+    })
+  }
+}
+
 
