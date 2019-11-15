@@ -24,7 +24,8 @@ const App = () => {
             <CssBaseline/>
             <Switch>
               <Route path='/login' component={Login}/>
-              <PrivateRoute exact path='/' component={Dashboard}/>
+              <PrivateRoute path='/' component={Dashboard}/>
+              <PrivateRoute path={'/dashboards/:id'} component={Dashboard}/>
               <Route component={PageNotFound}/>
             </Switch>
           </ThemeProvider>

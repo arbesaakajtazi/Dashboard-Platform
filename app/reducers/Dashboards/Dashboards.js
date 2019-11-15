@@ -10,10 +10,9 @@ const dashboards = (state = [], action) => {
       return state.filter(next => next.id !== action.dashboard.id)
     case ACTION_TYPES.UPDATE_DASHBOARD:
       return state.map(next => {
-        if(next.id === action.dashboard.id){
+        if (next.id === action.dashboard.id) {
           return action.id
-        }
-        else {
+        } else {
           return next
         }
       })
@@ -30,6 +29,7 @@ const dashboardsFilter = (state = '', action) => {
       return state
   }
 }
+
 
 const dashboardsReducer = (state = {}, action) => {
   return {
@@ -50,6 +50,18 @@ export const filteredDashboards = (state) => {
     const name = next.name.toLocaleLowerCase()
     return name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
   })
+}
+
+const children = (state, action) => {
+  return state.filter(next => {
+    return action ? action.id === next.parentId : !next.parentId}).map(next => ({
+    ...next,
+    children: children(state, next)
+  }))
+}
+export const dashboardChildren = (state) => {
+  const {dashboards} = state.dashboards
+  return children(dashboards)
 }
 
 export default dashboardsReducer

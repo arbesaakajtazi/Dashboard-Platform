@@ -113,7 +113,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
-    color:palette.leadTextColor,
+    color:palette.text.default,
     fontFamily: typography.fontFamily,
     fontSize: size.defaultFontSize,
     textTransform: 'lowercase'

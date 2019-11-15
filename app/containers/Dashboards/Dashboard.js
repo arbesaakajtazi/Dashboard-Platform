@@ -59,6 +59,7 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     background: palette.primary.contrastText,
     padding: `${(size.spacing * 2) - 1}px ${(size.spacing * 2) - 2}px ${(size.spacing * 2) - 2}px`,
     width: 110,
+    maxHeight: 49,
     marginLeft: size.spacing,
     borderRadius: size.baseRadius,
     fontSize: size.defaultFontSize,

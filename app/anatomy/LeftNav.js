@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Switch from '@material-ui/core/Switch'
 import {changeTheme} from 'reducers/Theme/ThemeActions'
+import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
+import {dashboardChildren} from 'reducers/Dashboards/Dashboards'
+import {NavLink} from "react-router-dom";
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -25,9 +28,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     lineHeight: '39px',
     fontWeight: typography.weight.bold
   },
-  navContent: {
-    color: palette.background.dark
-  },
   navFooter: {
     color: palette.primary.contrastText,
     fontSize: size.headerFontSize,
@@ -35,24 +35,30 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     alignItems: 'center',
     padding: `0px ${(size.spacing * 3) - 4}px`,
+    textTransform: 'capitalize'
   },
   switch: {
-    marginLeft: 10
+    marginLeft: size.spacing
   },
-  parentList: {
-    paddingLeft: 20,
-    fontSize: size.headerFontSize,
-    lineHeight: '19px',
-    marginTop: '28px',
-    '& li': {}
+  children: {
+    padding: `0 ${(size.spacing * 2) + 2}px`,
+    fontSize: size.headerFontSize
   },
-  childList: {
-    paddingLeft: 17,
-    listStyle: 'none'
+  menuLink: {
+    color: palette.background.dark,
+    textDecoration: 'none'
+  },
+  activeMenuLink: {
+    color: palette.primary.main
   }
 })
 
 class LeftNav extends Component {
+
+  componentDidMount() {
+    const {fetchDashboards} = this.props
+    fetchDashboards()
+  }
 
   changeTheme = () => {
     const {theme, changeTheme} = this.props
@@ -64,25 +70,34 @@ class LeftNav extends Component {
   }
 
   render() {
-    const {classes, theme} = this.props
+    const {classes, theme, dashboards} = this.props
+    const DashboardsHierarchy = ({dashboard}) => {
+      const hasDashboards = dashboards.length > 0
+      const nestedChildren = (dashboard.children).map(dashboard => {
+        return <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
+      })
+      return (
+        hasDashboards && <ul className={classes.children}>
+          <li>
+            <NavLink
+              to={`/${dashboard.id}`}
+              className={classes.menuLink}
+              activeClassName={classes.activeMenuLink}
+            >{dashboard.name}</NavLink>
+            {nestedChildren}
+          </li>
+        </ul>
+      )
+    }
     return (
       <div className={classes.root}>
         <div>
           <div className={classes.navHeader}>Overview</div>
-          <div className={classes.navContent}>
-            <ul className={classes.parentList}>
-              <li>
-                Sales Overview
-                <ul className={classes.childList}>
-                  <li>Sales Profit</li>
-                  <li>Sales Loss</li>
-                  <li>Sales 2017</li>
-                </ul>
-              </li>
-              <li>Costumer Journey</li>
-              <li>Two Column Dashboard</li>
-            </ul>
-          </div>
+            {dashboards.map((dashboard) => {
+              return (
+                <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
+              )
+            })}
         </div>
         <div className={classes.navFooter}>
           <div>{theme} Mode</div>
@@ -95,12 +110,14 @@ class LeftNav extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    theme: store.theme
+    theme: store.theme,
+    dashboards: dashboardChildren(store)
   }
 }
 
 const mapDispatchToProps = {
-  changeTheme
+  changeTheme,
+  fetchDashboards,
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(LeftNav))
