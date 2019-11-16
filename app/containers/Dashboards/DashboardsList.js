@@ -80,15 +80,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing}px ${size.spacing * 2}px`,
     marginRight: 10
   },
-  iconButton: {
-    padding: 0,
-    '&:hover': {
-      backgroundColor: 'transparent'
-    },
-    '& svg': {
-      height: 27
-    }
-  },
   editCard: {
     width: 95,
     height: 77,
@@ -170,7 +161,7 @@ class DashboardsList extends Component {
           }}
           disableRestoreFocus>
           <div className={classes.edit}>
-            <IconButton className={classes.iconButton} onClick={event => {
+            <IconButton onClick={event => {
               event.preventDefault()
               this.props.onEdit(item)
             }}>
@@ -181,7 +172,7 @@ class DashboardsList extends Component {
             </div>
           </div>
           <div className={classes.delete}>
-            <IconButton className={classes.iconButton} onClick={() => this.onDelete(item)}>
+            <IconButton onClick={() => this.onDelete(item)}>
               <DeleteIcon/>
             </IconButton>
             <div>
@@ -190,7 +181,7 @@ class DashboardsList extends Component {
           </div>
         </Popover>
         <div className={classes.SvgWrapper}>
-          <IconButton className={classes.iconButton} onClick={this.onOpen}>
+          <IconButton onClick={this.onOpen}>
             <DotsIcon className={classes.dotsSvg}/>
           </IconButton>
         </div>

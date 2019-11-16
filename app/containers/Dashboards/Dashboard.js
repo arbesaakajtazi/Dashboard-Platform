@@ -4,16 +4,15 @@ import {sessionService} from 'redux-react-session'
 import Content from 'anatomy/Content'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Button from 'presentations/Button/Button'
-import {TextField} from '@material-ui/core'
+import {TextField, IconButton, InputAdornment} from '@material-ui/core'
 import FilterIcon from 'presentations/Icons/FilterIcon'
 import SearchIcon from 'presentations/Icons/SearchIcon'
 import GroupDashboardsIcon from 'presentations/Icons/GroupDashboardsIcon'
 import ListDashboardsIcon from 'presentations/Icons/ListDashboardIcon'
-import {IconButton} from '@material-ui/core'
 import DashboardsList from 'containers/Dashboards/DashboardsList'
 import DashboardsForm from 'containers/Dashboards/DashboardsForm'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
-import {filteredDashboards} from 'reducers/Dashboards/Dashboards'
+import {dashboardChildren, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import {filter} from 'reducers/Dashboards/DashboardsActions'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -31,7 +30,6 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   },
   textField: {
     width: '100%',
-    maxWidth: 233,
     border: `1px solid transparent`,
     borderRadius: size.baseRadius,
     backgroundColor: palette.background.main,
@@ -75,13 +73,6 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   },
   search: {
     position: 'relative'
-  },
-  searchIcon: {
-    width: 25,
-    height: 45,
-    zIndex: 1,
-    position: 'absolute',
-    right: 5
   },
   addButton: {
     border: 'none',
@@ -160,8 +151,18 @@ class Dashboard extends Component {
                          onChange={this.onChange}
                          className={classes.textField}
                          variant='filled'
-                         InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}/>
-              <SearchIcon className={classes.searchIcon}/>
+                         InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
+                         InputProps={{
+                           endAdornment: (
+                             <InputAdornment position="end">
+                               <IconButton >
+                                 <SearchIcon/>
+                               </IconButton>
+                             </InputAdornment>)
+                         }}
+              />
+
+                         {/*<SearchIcon className={classes.searchIcon}/>*/}
             </div>
             <div className={classes.filter}>
               <div className={classes.filterContent}>
@@ -194,7 +195,7 @@ class Dashboard extends Component {
 const mapStateToProps = (store) => {
   return {
     session: store.session,
-    dashboard: filteredDashboards(store.dashboards),
+    dashboard: dashboardChildren(store),
     search: store.dashboards.filter
   }
 }

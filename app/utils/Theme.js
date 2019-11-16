@@ -108,6 +108,17 @@ const theme = (type = 'light') => ({
     })
   ],
   overrides: {
+    MuiIconButton: {
+     root: {
+        padding: 0,
+       '&:hover': {
+         backgroundColor: 'transparent'
+       },
+      },
+      '& svg': {
+        height: 27
+      }
+    },
     MuiSwitch: {
       root: {
         width: 69,
