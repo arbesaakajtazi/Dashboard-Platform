@@ -80,7 +80,7 @@ class LeftNav extends Component {
         hasDashboards && <ul className={classes.children}>
           <li>
             <NavLink
-              to={`/${dashboard.id}`}
+              to={`/dashboards/${dashboard.id}`}
               className={classes.menuLink}
               activeClassName={classes.activeMenuLink}
             >{dashboard.name}</NavLink>
