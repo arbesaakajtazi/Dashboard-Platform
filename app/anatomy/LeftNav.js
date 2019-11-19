@@ -43,7 +43,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   children: {
     padding: `0 ${(size.spacing * 2) + 2}px`,
-    fontSize: size.headerFontSize
+    fontSize: size.menuLinks
   },
   menuLink: {
     color: palette.background.dark,
@@ -72,21 +72,21 @@ class LeftNav extends Component {
 
   render() {
     const {classes, theme, dashboards} = this.props
-    const DashboardsHierarchy = ({dashboard}) => {
-      const hasDashboards = dashboards.length > 0
-      const nestedChildren = (dashboard.children).map(dashboard => {
-        return <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
-      })
+
+    const buildHierarchy = (dashboards) => {
+      const notNull = dashboards.length > 0
       return (
-        hasDashboards && <ul className={classes.children}>
-          <li>
-            <NavLink
-              to={`/dashboards/${dashboard.id}`}
-              className={classes.menuLink}
-              activeClassName={classes.activeMenuLink}
-            >{dashboard.name}</NavLink>
-            {nestedChildren}
-          </li>
+        notNull && <ul className={classes.children}>
+          {dashboards.map(dashboard => (
+            <li key={dashboard.id}>
+              <NavLink
+                to={`/dashboards/${dashboard.id}`}
+                className={classes.menuLink}
+                activeClassName={classes.activeMenuLink}
+              >{dashboard.name}</NavLink>
+              {dashboard.children.length > 0 ? buildHierarchy(dashboard.children) : null}
+            </li>
+          ))}
         </ul>
       )
     }
@@ -97,11 +97,7 @@ class LeftNav extends Component {
             className={classes.navHeader}
             to={`/`}
           >Overview</NavLink>
-          {dashboards.map((dashboard) => {
-            return (
-              <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
-            )
-          })}
+          {buildHierarchy(dashboards)}
         </div>
         <div className={classes.navFooter}>
           <div>{theme} Mode</div>

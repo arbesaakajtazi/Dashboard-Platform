@@ -63,6 +63,7 @@ const theme = (type = 'light') => ({
     headingFontSize: 30,
     subTitleFontSize: 24,
     headerFontSize: 18,
+    menuLinks: 16,
     defaultFontSize: 14,
     smallFontSize: 12,
     spacing: 8,
