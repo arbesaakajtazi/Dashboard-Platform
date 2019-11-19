@@ -8,6 +8,7 @@ import {IconButton, Popover} from '@material-ui/core'
 import EditIcon from 'presentations/Icons/EditIcon'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
 import {deleteDashboards} from 'reducers/Dashboards/DashboardsActions'
+import {NavLink} from 'react-router-dom'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {},
@@ -18,23 +19,22 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   header: {
     fontSize: size.smallFontSize,
-    color: palette.text.primary,
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'space-between',
     padding: `${(size.spacing * 3) - 4}px ${(size.spacing * 4) - 2}px 0px`,
     position: 'relative'
   },
-  date: {
-    paddingLeft: 20,
+  childrenLength: {
+    paddingRight: 20,
     position: 'relative',
-    '&:before': {
+    '&:after': {
       content: '""',
       position: 'absolute',
       height: 4,
       top: 5,
       width: 4,
-      left: 9,
+      right: 9,
       backgroundColor: palette.text.primary,
       borderRadius: '100%'
     }
@@ -42,16 +42,10 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   content: {
     padding: `${size.spacing * 4}px`
   },
-  dashboardTitle: {
-    fontSize: size.headingFontSize,
-    color: palette.text.default,
-    fontWeight: typography.weight.bold,
-    paddingBottom: `${size.spacing * 2}px`
-  },
   description: {
     fontSize: size.defaultFontSize,
     color: palette.textColor,
-    wordBreak: 'break-all'
+    paddingTop: `${size.spacing * 2}px`
   },
   left: {
     display: 'flex',
@@ -76,9 +70,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     backgroundColor: palette.secondary.light,
     border: `1px solid ${palette.secondary.dark}`,
     borderRadius: `${size.baseRadius * 7}px`,
-    width: 95,
     padding: `${size.spacing}px ${size.spacing * 2}px`,
-    marginRight: 10
+    marginRight: 10,
+    textDecoration: 'none',
   },
   editCard: {
     width: 95,
@@ -104,11 +98,17 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
-    color:palette.text.default,
+    color: palette.text.default,
     fontFamily: typography.fontFamily,
     fontSize: size.defaultFontSize,
     textTransform: 'lowercase'
-  }
+  },
+  menuLink: {
+    textDecoration: 'none',
+    color: palette.text.default,
+    fontSize: size.headingFontSize,
+    fontWeight: typography.weight.bold,
+  },
 })
 
 class DashboardsList extends Component {
@@ -120,6 +120,7 @@ class DashboardsList extends Component {
   onDelete = (item) => {
     const {deleteDashboards} = this.props
     deleteDashboards(item)
+    this.setState({anchorEl: null})
   }
 
   onOpen = (event) => {
@@ -130,89 +131,86 @@ class DashboardsList extends Component {
     this.setState({anchorEl: null})
   }
 
-  renderDashboards = (item) => {
-    const {classes} = this.props
+  render() {
+    const {dashboards, classes} = this.props
     const {anchorEl} = this.state
     const open = !!anchorEl
-    return <Card key={item.id}>
-      <div className={classes.header}>
-        <div className={classes.left}>
-          <div>
-            4 children
-          </div>
-          <div className={classes.date}>
-            {moment(item.createdAt).format('DD.MM.YYYY')}
-          </div>
-        </div>
-        <Popover
-          classes={{
-            paper: classes.paper
-          }}
-          onClose={this.onClose}
-          open={open}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          disableRestoreFocus>
-          <div className={classes.edit}>
-            <IconButton onClick={event => {
-              event.preventDefault()
-              this.props.onEdit(item)
-            }}>
-              <EditIcon/>
-            </IconButton>
-            <div>
-              Edit
-            </div>
-          </div>
-          <div className={classes.delete}>
-            <IconButton onClick={() => this.onDelete(item)}>
-              <DeleteIcon/>
-            </IconButton>
-            <div>
-              Delete
-            </div>
-          </div>
-        </Popover>
-        <div className={classes.SvgWrapper}>
-          <IconButton onClick={this.onOpen}>
-            <DotsIcon className={classes.dotsSvg}/>
-          </IconButton>
-        </div>
-      </div>
-      <div className={classes.content}>
-        <div className={classes.dashboardTitle}>
-          {item.name}
-        </div>
-        <div className={classes.description}>
-          {item.description}
-        </div>
-      </div>
-      <div className={classes.footer}>
-        <div className={classes.children}>
-          sales_profit
-        </div>
-        <div className={classes.children}>
-          sales_profit
-        </div>
-        <div className={classes.children}>
-          sales_profit
-        </div>
-      </div>
-    </Card>
-  }
-
-  render() {
-    const {items, classes} = this.props
+    console.log(dashboards, "dashboards")
     return (
       <div className={classes.wrapDashboards}>
-        {items.map(this.renderDashboards)}
+        {!!dashboards && dashboards.map(dashboard => {
+          const length = dashboard.children.length
+          return <Card key={dashboard.id}>
+            <div className={classes.header}>
+              <div className={classes.left}>
+                {!!length && <div className={classes.childrenLength}>{length} <span>children</span></div>}
+                <div className={classes.date}>
+                  {moment(dashboard.createdAt).format('DD.MM.YYYY')}
+                </div>
+              </div>
+              <Popover
+                classes={{
+                  paper: classes.paper
+                }}
+                onClose={this.onClose}
+                open={open}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right'
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right'
+                }}
+                disableRestoreFocus>
+                <div className={classes.edit}>
+                  <IconButton onClick={event => {
+                    event.preventDefault()
+                    this.props.onEdit(dashboard)
+                  }}>
+                    <EditIcon/>
+                  </IconButton>
+                  <div>
+                    Edit
+                  </div>
+                </div>
+                <div className={classes.delete}>
+                  <IconButton onClick={() => this.onDelete(dashboard)}>
+                    <DeleteIcon/>
+                  </IconButton>
+                  <div>
+                    Delete
+                  </div>
+                </div>
+              </Popover>
+              <div className={classes.SvgWrapper}>
+                <IconButton onClick={this.onOpen}>
+                  <DotsIcon className={classes.dotsSvg}/>
+                </IconButton>
+              </div>
+            </div>
+
+            <div className={classes.content}>
+              <NavLink
+                to={`/dashboards/${dashboard.id}`}
+                className={classes.menuLink}
+              >{dashboard.name}</NavLink>
+              <div className={classes.description}>
+                {dashboard.description}
+              </div>
+            </div>
+
+            <div className={classes.footer}>
+              {!!dashboard.children && dashboard.children.map(next => {
+                return <NavLink
+                  to={`/dashboards/${next.id}`}
+                  className={classes.children}
+                >{next.name}</NavLink>
+              })}
+            </div>
+          </Card>
+        })}
       </div>
     )
   }

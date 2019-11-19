@@ -140,7 +140,6 @@ class Login extends Component {
   render() {
     const {classes, error, session} = this.props
     const {message} = this.state
-    console.log(message,'message')
     return (
       <Wrapper>
         <div className={classes.root}>
@@ -178,7 +177,7 @@ class Login extends Component {
             >
               Login
             </Button>
-            <div className={classes.formMessage}>{error}</div>
+            {error && <div className={classes.formMessage}>{error}</div>}
             {message && <div className={classes.formMessage}>{message}</div>}
           </div>
         </div>

@@ -85,12 +85,6 @@ class DashboardsForm extends Component {
     onCancelClicked()
   }
 
-  // onKeyPress = (event) => {
-  //   if (event.key === 'Enter') {
-  //     this.onSaveClicked(event)
-  //   }
-  // }
-
   render() {
     const {classes, open, onCancelClicked} = this.props
     const {item = {}} = this.state

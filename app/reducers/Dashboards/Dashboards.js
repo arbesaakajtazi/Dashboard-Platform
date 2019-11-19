@@ -52,7 +52,7 @@ export const filteredDashboards = (state) => {
   })
 }
 
-const children = (state, action) => {
+export const children = (state, action) => {
   return state.filter(next => {
     return action ? action.id === next.parentId : !next.parentId}).map(next => ({
     ...next,
@@ -60,7 +60,7 @@ const children = (state, action) => {
   }))
 }
 export const dashboardChildren = (state) => {
-  const {dashboards} = state.dashboards
+  const { dashboards: { dashboards = [] } } = state
   return children(dashboards)
 }
 

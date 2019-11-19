@@ -4,7 +4,7 @@ import {sessionService} from 'redux-react-session'
 import Content from 'anatomy/Content'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Button from 'presentations/Button/Button'
-import {TextField, IconButton, InputAdornment} from '@material-ui/core'
+import {TextField, IconButton, InputAdornment, Typography} from '@material-ui/core'
 import FilterIcon from 'presentations/Icons/FilterIcon'
 import SearchIcon from 'presentations/Icons/SearchIcon'
 import GroupDashboardsIcon from 'presentations/Icons/GroupDashboardsIcon'
@@ -12,7 +12,7 @@ import ListDashboardsIcon from 'presentations/Icons/ListDashboardIcon'
 import DashboardsList from 'containers/Dashboards/DashboardsList'
 import DashboardsForm from 'containers/Dashboards/DashboardsForm'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
-import {dashboardChildren, filteredDashboards} from 'reducers/Dashboards/Dashboards'
+import {dashboardChildren, children} from 'reducers/Dashboards/Dashboards'
 import {filter} from 'reducers/Dashboards/DashboardsActions'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -77,13 +77,22 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   addButton: {
     border: 'none',
     borderRadius: '100%',
-    width: 77,
-    height: 77,
+    width: 65,
+    height: 65,
     padding: 0,
     boxShadow: shadows[2],
     '& svg': {
-      fontSize: 52,
+      fontSize: 40,
     },
+  },
+  logOut: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    '& Button': {
+      padding: 5,
+      borderRadius: size.baseRadius
+    }
   }
 })
 
@@ -91,7 +100,18 @@ class Dashboard extends Component {
 
   state = {
     open: true,
-    editing: undefined
+    editing: undefined,
+    selectedDashboard: undefined
+  }
+
+  componentDidUpdate(prevProps) {
+    const {dashboards, match: {params: {id = ''} = {}} = {}} = this.props
+    const { match: { params: { id: prevId = '' }}}  = prevProps
+    if (prevProps.dashboards !== dashboards || prevId !== id) {
+      this.setState({
+        selectedDashboard: dashboards.find(next => next.id === id)
+      })
+    }
   }
 
   componentDidMount() {
@@ -139,10 +159,17 @@ class Dashboard extends Component {
   }
 
   render() {
-    const {session: {user: {username = ''} = {}} = {}, classes, search, dashboard} = this.props
-    const {editing = {}} = this.state
+    const {session: {user: {username = ''} = {}} = {}, classes, search, dashboard, dashboards} = this.props
+    const {editing = {}, selectedDashboard} = this.state
+    console.log(selectedDashboard, "SELECTED DASHBOARDS")
+    const parent = !!selectedDashboard ? children(dashboards,selectedDashboard) : dashboard
+    console.log('parent', dashboard)
     return (
       <Content>
+        <div className={classes.logOut}>
+          <Typography variant={'body1'}>Welcome {username}</Typography>
+          <Button onClick={this.onLogOutClicked} variant='flat' color='primary'>Log Out</Button>
+        </div>
         <div className={classes.header}>
           <div className={classes.filterWrapper}>
             <div className={classes.search}>
@@ -155,14 +182,12 @@ class Dashboard extends Component {
                          InputProps={{
                            endAdornment: (
                              <InputAdornment position="end">
-                               <IconButton >
+                               <IconButton>
                                  <SearchIcon/>
                                </IconButton>
                              </InputAdornment>)
                          }}
               />
-
-                         {/*<SearchIcon className={classes.searchIcon}/>*/}
             </div>
             <div className={classes.filter}>
               <div className={classes.filterContent}>
@@ -180,7 +205,7 @@ class Dashboard extends Component {
             </IconButton>
           </div>
         </div>
-        <DashboardsList items={dashboard} onEdit={this.onEdit}/>
+        <DashboardsList dashboards={parent} onEdit={this.onEdit}/>
         <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked}/>
         <div className={classes.dashboardBtn}>
           <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
@@ -196,6 +221,7 @@ const mapStateToProps = (store) => {
   return {
     session: store.session,
     dashboard: dashboardChildren(store),
+    dashboards: store.dashboards.dashboards,
     search: store.dashboards.filter
   }
 }

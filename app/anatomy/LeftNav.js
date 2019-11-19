@@ -26,7 +26,8 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     color: palette.primary.contrastText,
     fontSize: size.headingFontSize,
     lineHeight: '39px',
-    fontWeight: typography.weight.bold
+    fontWeight: typography.weight.bold,
+    textDecoration: 'none'
   },
   navFooter: {
     color: palette.primary.contrastText,
@@ -92,12 +93,15 @@ class LeftNav extends Component {
     return (
       <div className={classes.root}>
         <div>
-          <div className={classes.navHeader}>Overview</div>
-            {dashboards.map((dashboard) => {
-              return (
-                <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
-              )
-            })}
+          <NavLink
+            className={classes.navHeader}
+            to={`/`}
+          >Overview</NavLink>
+          {dashboards.map((dashboard) => {
+            return (
+              <DashboardsHierarchy key={dashboard.id} dashboard={dashboard}/>
+            )
+          })}
         </div>
         <div className={classes.navFooter}>
           <div>{theme} Mode</div>

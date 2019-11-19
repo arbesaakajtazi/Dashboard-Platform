@@ -6,16 +6,13 @@ const authentication = (state = [], action) => {
     case ACTION_TYPES.LOGIN_REQUEST:
       return {
         ...state,
-        receivedAt: moment().valueOf()
+        receivedAt: moment().valueOf(),
+        // message: `Your username or password didn't match!`
       }
     case ACTION_TYPES.LOGIN_SUCCESS:
       return {
         ...state,
         message: null
-      }
-    case ACTION_TYPES.LOGIN_FAILURE:
-      return {
-        message: `Your username or password didn't match!`
       }
     case ACTION_TYPES.ACTION_LOGOUT:
       return {

@@ -15,13 +15,6 @@ export const success = (session) => {
   }
 }
 
-export const loginError = (error) => {
-  return {
-    type: ACTION_TYPES.LOGIN_FAILURE,
-    error
-  }
-}
-
 export const logout = () => {
   return {
     type: ACTION_TYPES.ACTION_LOGOUT
