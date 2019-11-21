@@ -5,7 +5,8 @@ import Switch from '@material-ui/core/Switch'
 import {changeTheme} from 'reducers/Theme/ThemeActions'
 import {fetchDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {dashboardChildren} from 'reducers/Dashboards/Dashboards'
-import {NavLink} from "react-router-dom";
+import {NavLink} from 'react-router-dom'
+import classNames from 'classnames'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -51,6 +52,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   activeMenuLink: {
     color: palette.primary.main
+  },
+  index: {
+    listStyle: 'none'
   }
 })
 
@@ -73,10 +77,10 @@ class LeftNav extends Component {
   render() {
     const {classes, theme, dashboards} = this.props
 
-    const buildHierarchy = (dashboards) => {
+    const buildHierarchy = (dashboards, index) => {
       const notNull = dashboards.length > 0
       return (
-        notNull && <ul className={classes.children}>
+        notNull && <ul className={classNames(classes.children, index && classes.index)}>
           {dashboards.map(dashboard => (
             <li key={dashboard.id}>
               <NavLink
@@ -84,7 +88,7 @@ class LeftNav extends Component {
                 className={classes.menuLink}
                 activeClassName={classes.activeMenuLink}
               >{dashboard.name}</NavLink>
-              {dashboard.children.length > 0 ? buildHierarchy(dashboard.children) : null}
+              {dashboard.children.length > 0 ? buildHierarchy(dashboard.children, index + 1) : null}
             </li>
           ))}
         </ul>
@@ -97,7 +101,7 @@ class LeftNav extends Component {
             className={classes.navHeader}
             to={`/`}
           >Overview</NavLink>
-          {buildHierarchy(dashboards)}
+          {buildHierarchy(dashboards, 0)}
         </div>
         <div className={classes.navFooter}>
           <div>{theme} Mode</div>

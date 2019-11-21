@@ -11,7 +11,7 @@ const dashboards = (state = [], action) => {
     case ACTION_TYPES.UPDATE_DASHBOARD:
       return state.map(next => {
         if (next.id === action.dashboard.id) {
-          return action.id
+          return action.dashboard
         } else {
           return next
         }
@@ -54,13 +54,14 @@ export const filteredDashboards = (state) => {
 
 export const children = (state, action) => {
   return state.filter(next => {
-    return action ? action.id === next.parentId : !next.parentId}).map(next => ({
+    return action ? action.id === next.parentId : !next.parentId
+  }).map(next => ({
     ...next,
     children: children(state, next)
   }))
 }
 export const dashboardChildren = (state) => {
-  const { dashboards: { dashboards = [] } } = state
+  const {dashboards: {dashboards = []}} = state
   return children(dashboards)
 }
 

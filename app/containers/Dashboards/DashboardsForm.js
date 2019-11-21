@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@material-ui/core'
 import Button from 'presentations/Button/Button'
 import {addDashboards, updateDashboards} from 'reducers/Dashboards/DashboardsActions'
+import Typography from "@material-ui/core/Typography";
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -27,25 +28,24 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   dialogActions: {
     padding: `${size.spacing * 2}px ${size.spacing * 6}px ${size.spacing * 7}px`,
-    margin: 0
-  },
-  dialogActionsBtn: {
-    padding: size.spacing * 2,
-    borderRadius: size.baseRadius,
-    fontSize: size.defaultFontSize,
-    lineHeight: '19px'
+    margin: 0,
+    '& button': {
+      padding: size.spacing * 2,
+      borderRadius: size.baseRadius,
+      lineHeight: '19px'
+    }
   }
 })
 
 class DashboardsForm extends Component {
 
   state = {
-    items: []
+    items: {}
   }
 
   componentDidMount() {
     this.setState({
-      item: this.props.item
+      item: this.props.items
     })
   }
 
@@ -88,6 +88,7 @@ class DashboardsForm extends Component {
   render() {
     const {classes, open, onCancelClicked} = this.props
     const {item = {}} = this.state
+
     return (
       <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
         <DialogTitle className={classes.dialogTitle}>
@@ -114,11 +115,11 @@ class DashboardsForm extends Component {
           />
         </DialogContent>
         <DialogActions className={classes.dialogActions}>
-          <Button variant='flat' color='default' className={classes.dialogActionsBtn} onClick={onCancelClicked}>
-            Cancel
+          <Button variant='flat' color='default' onClick={onCancelClicked}>
+            <Typography variant={"body2"}>Cancel</Typography>
           </Button>
-          <Button variant='flat' color='primary' className={classes.dialogActionsBtn} onClick={this.onSaveClicked}>
-            Save
+          <Button variant='flat' color='primary' onClick={this.onSaveClicked}>
+            <Typography variant={"body2"}>Save</Typography>
           </Button>
         </DialogActions>
       </Dialog>

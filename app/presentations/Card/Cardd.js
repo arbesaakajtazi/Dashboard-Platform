@@ -1,20 +1,19 @@
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
+import classNames from 'classnames'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
     backgroundColor: palette.background.paper,
-    width: `calc(33% - ${size.spacing * 2}px)`,
     boxShadow: shadows[4],
     borderRadius: size.baseRadius,
-    margin: `0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
     minWidth: 300
-  }
+  },
 })
 const Card = (props) => {
-  const {classes, children} = props
+  const {classes, children, activeDashboardView, className} = props
   return (
-    <div className={classes.root}>
+    <div className={classNames(classes.root, className)}>
       {children}
     </div>
   )

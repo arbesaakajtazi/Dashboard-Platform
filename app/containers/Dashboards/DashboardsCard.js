@@ -11,7 +11,11 @@ import {deleteDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {NavLink} from 'react-router-dom'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
-  root: {},
+  root: {
+    width: `calc(33% - ${size.spacing * 2}px)`,
+    padding: `${size.spacing * 4}px`,
+    margin: `0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
+  },
   wrapDashboards: {
     paddingTop: size.spacing,
     display: 'flex',
@@ -22,7 +26,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     flexFlow: 'row',
     justifyContent: 'space-between',
-    padding: `${(size.spacing * 3) - 4}px ${(size.spacing * 4) - 2}px 0px`,
     position: 'relative'
   },
   childrenLength: {
@@ -40,7 +43,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     }
   },
   content: {
-    padding: `${size.spacing * 4}px`
+    padding: `${size.spacing * 4}px 0px`
   },
   description: {
     fontSize: size.defaultFontSize,
@@ -49,7 +52,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   left: {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     lineHeight: `${size.spacing * 2}px`
   },
   SvgWrapper: {
@@ -60,7 +63,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     fontSize: size.displayFontSize
   },
   footer: {
-    padding: `0px ${(size.spacing * 4) - 2}px ${(size.spacing * 4) + 2}px`,
     display: 'flex',
     flexFlow: 'row wrap'
   },
@@ -111,7 +113,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
 })
 
-class DashboardsList extends Component {
+class DashboardsCard extends Component {
 
   state = {
     anchorEl: null
@@ -135,12 +137,12 @@ class DashboardsList extends Component {
     const {dashboards, classes} = this.props
     const {anchorEl} = this.state
     const open = !!anchorEl
-    console.log(dashboards, "dashboards")
+
     return (
       <div className={classes.wrapDashboards}>
         {!!dashboards && dashboards.map(dashboard => {
           const length = dashboard.children.length
-          return <Card key={dashboard.id}>
+          return <Card className={classes.root} key={dashboard.id}>
             <div className={classes.header}>
               <div className={classes.left}>
                 {!!length && <div className={classes.childrenLength}>{length} <span>children</span></div>}
@@ -220,4 +222,4 @@ const mapDispatchToProps = {
   deleteDashboards
 }
 
-export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardsList))
+export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardsCard))
