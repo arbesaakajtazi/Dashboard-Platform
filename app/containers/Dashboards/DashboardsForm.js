@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@material-ui/core'
+import {Dialog,TextField} from '@material-ui/core'
 import Button from 'presentations/Button/Button'
 import {addDashboards, updateDashboards} from 'reducers/Dashboards/DashboardsActions'
 import Typography from "@material-ui/core/Typography";
@@ -11,10 +11,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     backgroundColor: palette.primary.dark,
   },
   dialogTitle: {
-    '& h2': {
-      fontSize: size.displayFontSize,
-      fontWeight: typography.weight.bold
-    },
+    fontWeight: typography.weight.bold,
     padding: `${(size.spacing * 5) + 4}px ${size.spacing * 6}px ${(size.spacing * 7) - 2}px`,
     color: palette.secondary.contrastText
   },
@@ -33,7 +30,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
       padding: size.spacing * 2,
       borderRadius: size.baseRadius,
       lineHeight: '19px'
-    }
+    },
+    display: 'flex',
+    justifyContent: 'flex-end'
   }
 })
 
@@ -91,10 +90,10 @@ class DashboardsForm extends Component {
 
     return (
       <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
-        <DialogTitle className={classes.dialogTitle}>
+        <Typography variant={"h4"} className={classes.dialogTitle}>
           Create new project
-        </DialogTitle>
-        <DialogContent className={classes.dialogContent}>
+        </Typography>
+        <div className={classes.dialogContent}>
           <TextField fullWidth
                      variant='filled'
                      margin='normal'
@@ -113,15 +112,15 @@ class DashboardsForm extends Component {
                      variant='filled'
                      rows={9}
           />
-        </DialogContent>
-        <DialogActions className={classes.dialogActions}>
+        </div>
+        <div className={classes.dialogActions}>
           <Button variant='flat' color='default' onClick={onCancelClicked}>
             <Typography variant={"body2"}>Cancel</Typography>
           </Button>
           <Button variant='flat' color='primary' onClick={this.onSaveClicked}>
             <Typography variant={"body2"}>Save</Typography>
           </Button>
-        </DialogActions>
+        </div>
       </Dialog>
     )
   }

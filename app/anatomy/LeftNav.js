@@ -54,7 +54,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     color: palette.primary.main
   },
   index: {
-    listStyle: 'none'
+    listStyle: 'none',
   }
 })
 

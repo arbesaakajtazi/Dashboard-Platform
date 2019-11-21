@@ -9,6 +9,7 @@ import EditIcon from 'presentations/Icons/EditIcon'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
 import {deleteDashboards} from 'reducers/Dashboards/DashboardsActions'
 import {NavLink} from 'react-router-dom'
+import Typography from "@material-ui/core/Typography";
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -46,8 +47,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing * 4}px 0px`
   },
   description: {
-    fontSize: size.defaultFontSize,
-    color: palette.textColor,
     paddingTop: `${size.spacing * 2}px`
   },
   left: {
@@ -68,7 +67,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   children: {
     color: palette.primary.main,
-    fontSize: size.smallFontSize,
     backgroundColor: palette.secondary.light,
     border: `1px solid ${palette.secondary.dark}`,
     borderRadius: `${size.baseRadius * 7}px`,
@@ -198,9 +196,9 @@ class DashboardsCard extends Component {
                 to={`/dashboards/${dashboard.id}`}
                 className={classes.menuLink}
               >{dashboard.name}</NavLink>
-              <div className={classes.description}>
+              <Typography variant={"body2"} className={classes.description}>
                 {dashboard.description}
-              </div>
+              </Typography>
             </div>
 
             <div className={classes.footer}>
@@ -208,7 +206,11 @@ class DashboardsCard extends Component {
                 return <NavLink
                   to={`/dashboards/${next.id}`}
                   className={classes.children}
-                >{next.name}</NavLink>
+                >
+                  <Typography variant={"caption"}>
+                    {next.name}
+                  </Typography>
+                </NavLink>
               })}
             </div>
           </Card>
