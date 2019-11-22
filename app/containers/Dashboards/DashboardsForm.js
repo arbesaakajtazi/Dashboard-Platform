@@ -50,8 +50,6 @@ class DashboardsForm extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.item.id !== this.props.item.id && this.props.item) {
-      console.log('prevProps', prevProps.item)
-      console.log('thisProps', this.props.item)
       this.setState({
         item: this.props.item
       })
@@ -71,12 +69,15 @@ class DashboardsForm extends Component {
 
   onSaveClicked = (event) => {
     event.preventDefault()
-    const {addDashboards, updateDashboards, onCancelClicked} = this.props
+    const {addDashboards, updateDashboards, onCancelClicked, parent} = this.props
     const {item} = this.state
     let isNew = this.state.item.id === 'new'
     if (isNew) {
       if (item.name && item.description) {
-        addDashboards(item)
+        addDashboards({
+          ...item,
+          ...(!!parent && {parentId: parent.id})
+        })
       }
     } else {
       updateDashboards(item)

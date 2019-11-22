@@ -48,7 +48,9 @@ export const filteredDashboards = (state) => {
   const search = state.filter
   return state.dashboards.filter(next => {
     const name = next.name.toLocaleLowerCase()
-    return name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    const description = next.description.toLocaleLowerCase()
+    return name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+      description.toLocaleLowerCase().includes(search.toLocaleLowerCase())
   })
 }
 

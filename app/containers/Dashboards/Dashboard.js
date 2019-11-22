@@ -231,7 +231,7 @@ class Dashboard extends Component {
           </div>
         </div>
         {!active ? <DashboardsCard dashboards={parent} onEdit={this.onEdit}/> : <DashboardListView dashboards={parent} onEdit={this.onEdit}/>}
-        <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked}/>
+        <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked} parent={selectedDashboard}/>
         <div className={classes.dashboardBtn}>
           <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
             <AddIcon/>
