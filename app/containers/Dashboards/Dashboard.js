@@ -13,7 +13,7 @@ import DashboardsForm from 'containers/Dashboards/DashboardsForm'
 import DashboardListView from 'containers/Dashboards/DashboardListView'
 import DashboardsCard from 'containers/Dashboards/DashboardsCard'
 import {fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
-import {children, dashboardChildren, filteredDashboards} from 'reducers/Dashboards/Dashboards'
+import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
@@ -184,7 +184,8 @@ class Dashboard extends Component {
   render() {
     const {session: {user: {username = ''} = {}} = {}, classes, search, dashboards, filtered} = this.props
     const {editing = {}, selectedDashboard, active} = this.state
-    console.log("child", children(filtered, selectedDashboard))
+    const child = children(filtered, selectedDashboard)
+    console.log("child", child)
     console.log("dashboards", dashboards)
 
     return (
@@ -230,8 +231,8 @@ class Dashboard extends Component {
             </IconButton>
           </div>
         </div>
-        {!active ? <DashboardsCard dashboards={children(filtered, selectedDashboard)} onEdit={this.onEdit}/> :
-          <DashboardListView dashboards={children(filtered, selectedDashboard)} onEdit={this.onEdit}/>}
+        {!active ? <DashboardsCard dashboards={child} onEdit={this.onEdit}/> :
+          <DashboardListView dashboards={child} onEdit={this.onEdit}/>}
         <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked}
                         parent={selectedDashboard}/>
         <div className={classes.dashboardBtn}>
