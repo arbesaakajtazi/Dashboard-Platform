@@ -39,7 +39,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
 class DashboardsForm extends Component {
 
   state = {
-    items: {}
+    items: {},
+    name: '',
+    description: ''
   }
 
   componentDidMount() {
@@ -55,7 +57,6 @@ class DashboardsForm extends Component {
       })
     }
   }
-
 
   onValueChanged = (event) => {
     const {name, value} = event.target
