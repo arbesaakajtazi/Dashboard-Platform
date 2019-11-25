@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles'
-import {Dialog,TextField} from '@material-ui/core'
+import {Dialog, TextField} from '@material-ui/core'
 import Button from 'presentations/Button/Button'
 import {addDashboards, updateDashboards} from 'reducers/Dashboards/DashboardsActions'
 import Typography from "@material-ui/core/Typography";
@@ -39,19 +39,16 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
 class DashboardsForm extends Component {
 
   state = {
-    items: {},
     name: '',
-    description: ''
-  }
-
-  componentDidMount() {
-    this.setState({
-      item: this.props.items
-    })
+    description: '',
+    item: this.props.item
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.item.id !== this.props.item.id && this.props.item) {
+    // console.log('this.props',this.props)
+    // console.log('prevProps',prevProps)
+    // console.log('on Edit',this.props.item.name)
+    if (prevProps.open !== this.props.open && this.props.open) {
       this.setState({
         item: this.props.item
       })
@@ -72,12 +69,12 @@ class DashboardsForm extends Component {
     event.preventDefault()
     const {addDashboards, updateDashboards, onCancelClicked, parent} = this.props
     const {item} = this.state
-    let isNew = this.state.item.id === 'new'
+    let isNew = this.props.item.id === 'new'
     if (isNew) {
       if (item.name && item.description) {
         addDashboards({
           ...item,
-          ...(!!parent && {parentId: parent.id})
+          ...(parent && {parentId: parent.id})
         })
       }
     } else {
@@ -89,7 +86,7 @@ class DashboardsForm extends Component {
   render() {
     const {classes, open, onCancelClicked} = this.props
     const {item = {}} = this.state
-
+    console.log('ITEM', item)
     return (
       <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
         <Typography variant={"h4"} className={classes.dialogTitle}>

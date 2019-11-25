@@ -90,15 +90,6 @@ class Login extends Component {
     loggedInState: false
   }
 
-  /* componentDidUpdate() {
-     /!*const {location, session, history} = this.props
-     let {from} = location.state || {from: {pathname: "/"}}
-     if (session.authenticated) {
-       history.replace(from)
-     }*!/
-
-   }*/
-
   componentDidUpdate(prevProps, prevState) {
     const {session, redirect} = this.props
     const {user: {token = ''} = {}} = session

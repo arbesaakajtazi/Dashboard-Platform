@@ -10,9 +10,9 @@ import SearchIcon from 'presentations/Icons/SearchIcon'
 import GroupDashboardsIcon from 'presentations/Icons/GroupDashboardsIcon'
 import ListDashboardsIcon from 'presentations/Icons/ListDashboardIcon'
 import DashboardsForm from 'containers/Dashboards/DashboardsForm'
-import DashboardListView from 'containers/Dashboards/DashboardListView'
+import DashboardListView from 'containers/Dashboards/DashboardsListView'
 import DashboardsCard from 'containers/Dashboards/DashboardsCard'
-import {fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
+import {deleteDashboards, fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
 import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -143,6 +143,15 @@ class Dashboard extends Component {
     filter(event.target.value)
   }
 
+  onRequestChange = (event) => {
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState((prevState) => ({
+      active: !prevState.active
+    }))
+  }
+
   onRequestAdd = (event) => {
     this.setState({
       editing: {
@@ -157,19 +166,16 @@ class Dashboard extends Component {
     }))
   }
 
-  onRequestChange = (event) => {
-    if (event) {
-      event.preventDefault()
-    }
-    this.setState((prevState) => ({
-      active: !prevState.active
-    }))
-  }
-
   onEdit = (item) => {
     this.setState({
       editing: item
     })
+  }
+
+  onDelete = (item) => {
+    const {deleteDashboards} = this.props
+    deleteDashboards(item)
+    this.setState({anchorEl: null})
   }
 
   onCancelClicked = (event) => {
@@ -184,9 +190,8 @@ class Dashboard extends Component {
   render() {
     const {session: {user: {username = ''} = {}} = {}, classes, search, dashboards, filtered} = this.props
     const {editing = {}, selectedDashboard, active} = this.state
+    console.log("EDITING", editing)
     const child = children(filtered, selectedDashboard)
-    console.log("child", child)
-    console.log("dashboards", dashboards)
 
     return (
       <Content>
@@ -231,9 +236,18 @@ class Dashboard extends Component {
             </IconButton>
           </div>
         </div>
-        {!active ? <DashboardsCard dashboards={child} onEdit={this.onEdit}/> :
-          <DashboardListView dashboards={child} onEdit={this.onEdit}/>}
-        <DashboardsForm item={editing} open={!!editing.id} onCancelClicked={this.onCancelClicked}
+        {!active ?
+          <DashboardsCard dashboards={child}
+                          onEdit={this.onEdit}
+                          onDelete={this.onDelete}
+          /> :
+          <DashboardListView dashboards={child}
+                             onEdit={this.onEdit}
+                             onDelete={this.onDelete}
+          />}
+        <DashboardsForm item={editing}
+                        open={!!editing.id}
+                        onCancelClicked={this.onCancelClicked}
                         parent={selectedDashboard}/>
         <div className={classes.dashboardBtn}>
           <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
@@ -255,6 +269,7 @@ const mapStateToProps = (store) => {
 }
 const mapDispatchToProps = {
   fetchDashboards,
+  deleteDashboards,
   filter
 }
 

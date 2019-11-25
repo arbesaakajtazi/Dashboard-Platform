@@ -1,15 +1,14 @@
 import React, {Component} from 'react'
-import withStyles from '@material-ui/core/styles/withStyles'
-import {connect} from 'react-redux'
-import Card from 'presentations/Card/Cardd'
 import moment from 'moment'
-import DotsIcon from 'presentations/Icons/DotsIcon'
+import withStyles from '@material-ui/core/styles/withStyles'
 import {IconButton, Popover} from '@material-ui/core'
 import EditIcon from 'presentations/Icons/EditIcon'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
-import {deleteDashboards} from 'reducers/Dashboards/DashboardsActions'
+import DotsIcon from 'presentations/Icons/DotsIcon'
 import {NavLink} from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
+import Card from 'presentations/Card/Cardd'
+
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -17,12 +16,9 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    listStyle:'none',
+    listStyle: 'none',
     padding: `${size.spacing * 2}px`,
     marginBottom: `${size.spacing * 2}px`,
-  },
-  wrapDashboards: {
-    paddingTop: size.spacing,
   },
   right: {
     fontSize: size.smallFontSize,
@@ -90,21 +86,13 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     flex: '0 0 auto',
     minWidth: '10%',
   },
-  childrenDashboard: {
-    marginLeft: `${size.spacing * 3}px`,
-  }
+
 })
 
 class DashboardListView extends Component {
 
   state = {
     anchorEl: null
-  }
-
-  onDelete = (item) => {
-    const {deleteDashboards} = this.props
-    deleteDashboards(item)
-    this.setState({anchorEl: null})
   }
 
   onOpen = (event) => {
@@ -116,80 +104,59 @@ class DashboardListView extends Component {
   }
 
   render() {
-    const {dashboards, classes} = this.props
+    const {dashboard, classes, onEditListView, onDeleteListView} = this.props
     const {anchorEl} = this.state
     const open = !!anchorEl
-
-    const createRow = (dashboards, index) => {
-      const notNull = dashboards.length > 0
-      return (
-        notNull && <div>
-          {dashboards.map(dashboard => (
-            <div key={dashboard.id} className={index && classes.childrenDashboard}>
-                <Card className={classes.root}>
-                  <div className={classes.left}>
-                    <NavLink
-                      to={`/dashboards/${dashboard.id}`}
-                      className={classes.menuLink}
-                    >{dashboard.name}</NavLink>
-                    <Typography variant={"body2"} className={classes.description}>
-                      {dashboard.description}
-                    </Typography>
-                  </div>
-                  <div className={classes.right}>
-                    {moment(dashboard.createdAt).format('DD.MM.YYYY')}
-                    <Popover
-                      classes={{paper: classes.paper}}
-                      onClose={this.onClose}
-                      open={open}
-                      anchorEl={anchorEl}
-                      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-                      transformOrigin={{vertical: 'top', horizontal: 'right'}}
-                      disableRestoreFocus>
-                      <div className={classes.edit}>
-                        <IconButton onClick={event => {
-                          event.preventDefault()
-                          this.props.onEdit(dashboard)
-                        }}>
-                          <EditIcon/>
-                        </IconButton>
-                        <div>
-                          Edit
-                        </div>
-                      </div>
-                      <div className={classes.delete}>
-                        <IconButton onClick={() => this.onDelete(dashboard)}>
-                          <DeleteIcon/>
-                        </IconButton>
-                        <div>
-                          Delete
-                        </div>
-                      </div>
-                    </Popover>
-                    <div className={classes.SvgWrapper}>
-                      <IconButton onClick={this.onOpen}>
-                        <DotsIcon className={classes.dotsSvg}/>
-                      </IconButton>
-                    </div>
-                  </div>
-                </Card>
-                {dashboard.children.length > 0 ? createRow(dashboard.children, index + 1) : null}
-            </div>
-          ))}
-        </div>
-      )
-    }
-
     return (
-      <div className={classes.wrapDashboards}>
-        {createRow(dashboards, 0)}
-      </div>
+      <Card className={classes.root}>
+        <div className={classes.left}>
+          <NavLink
+            to={`/dashboards/${dashboard.id}`}
+            className={classes.menuLink}
+          >{dashboard.name}</NavLink>
+          <Typography variant={"body2"} className={classes.description}>
+            {dashboard.description}
+          </Typography>
+        </div>
+        <div className={classes.right}>
+          {moment(dashboard.createdAt).format('DD.MM.YYYY')}
+          <Popover
+            classes={{paper: classes.paper}}
+            onClose={this.onClose}
+            open={open}
+            anchorEl={anchorEl}
+            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+            transformOrigin={{vertical: 'top', horizontal: 'right'}}
+            disableRestoreFocus>
+            <div className={classes.edit}>
+              <IconButton onClick={event => {
+                event.preventDefault()
+                onEditListView(dashboard)
+              }}>
+                <EditIcon/>
+              </IconButton>
+              <div>
+                Edit
+              </div>
+            </div>
+            <div className={classes.delete}>
+              <IconButton onClick={() => onDeleteListView(dashboard)}>
+                <DeleteIcon/>
+              </IconButton>
+              <div>
+                Delete
+              </div>
+            </div>
+          </Popover>
+          <div className={classes.SvgWrapper}>
+            <IconButton onClick={this.onOpen}>
+              <DotsIcon className={classes.dotsSvg}/>
+            </IconButton>
+          </div>
+        </div>
+      </Card>
     )
   }
 }
 
-const mapDispatchToProps = {
-  deleteDashboards
-}
-
-export default withStyles(styles)(connect(null, mapDispatchToProps)(DashboardListView))
+export default withStyles(styles)(DashboardListView)

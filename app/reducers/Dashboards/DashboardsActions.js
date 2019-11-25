@@ -120,6 +120,7 @@ export const updateDashboards = (dashboard) => {
       }
     }).then((dashboard) => {
       dispatch(updateDashboard(dashboard))
+      console.log("dashboard", dashboard)
       return dashboard
     }, (error) => {
       dispatch(displayMessage(error))

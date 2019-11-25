@@ -151,6 +151,7 @@ const theme = (type = 'light') => ({
     },
     MuiFilledInput: {
       root: {
+        borderRadius: 4,
         backgroundColor: '#D9E0E6',
         '&$focused': {
           backgroundColor: '#D9E0E6',
