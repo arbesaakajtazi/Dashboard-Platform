@@ -7,7 +7,7 @@ import DeleteIcon from 'presentations/Icons/DeleteIcon'
 import DotsIcon from 'presentations/Icons/DotsIcon'
 import {NavLink} from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
-import Card from 'presentations/Card/Cardd'
+import Card from 'presentations/Card/Card'
 
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
