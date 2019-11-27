@@ -15,6 +15,7 @@ import DashboardsCard from 'containers/Dashboards/DashboardsCard'
 import {deleteDashboards, fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
 import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
+import DashboardContent from 'containers/Dashboards/DashboardContent'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {},
@@ -22,11 +23,6 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  dashboardBtn: {
-    position: 'absolute',
-    bottom: 50,
-    right: 80
   },
   textField: {
     width: '100%',
@@ -81,6 +77,9 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     height: 65,
     padding: 0,
     boxShadow: shadows[2],
+    position: 'absolute',
+    bottom: 50,
+    right: 80
   },
   logOut: {
     display: 'flex',
@@ -211,9 +210,7 @@ class Dashboard extends Component {
                          InputProps={{
                            endAdornment: (
                              <InputAdornment position="end">
-                               <IconButton>
-                                 <SearchIcon/>
-                               </IconButton>
+                               <SearchIcon/>
                              </InputAdornment>)
                          }}
               />
@@ -249,11 +246,10 @@ class Dashboard extends Component {
                         open={!!editing.id}
                         onCancelClicked={this.onCancelClicked}
                         parent={selectedDashboard}/>
-        <div className={classes.dashboardBtn}>
-          <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
-            <AddIcon/>
-          </Button>
-        </div>
+        <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
+          <AddIcon/>
+        </Button>
+        <DashboardContent/>
       </Content>
     )
   }

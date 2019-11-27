@@ -99,7 +99,7 @@ const theme = (type = 'light') => ({
     '0px 3px 6px 0px rgba(0, 0, 0, 0.16)',
     '0px 3px 10px 0px rgba(0, 0, 0, 0.16)',
     '0px 4px 5px 0px rgba(0, 0, 0, 0.16)',
-    '0px 5px 20px 0px rgba(64, 81, 88, 0.16)',
+    '0px 5px 20px 0px rgba(64, 81, 88, 0.22)',
     '0px 3px 7px 0px rgba(0, 0, 0, 0.24)',
     '0px 7px 13px 0px rgba(0, 0, 0, 0.17)',
     '10px 0px 30px 0px rgba(0, 0, 0, 0.30)',
@@ -110,11 +110,11 @@ const theme = (type = 'light') => ({
   ],
   overrides: {
     MuiIconButton: {
-     root: {
+      root: {
         padding: 0,
-       '&:hover': {
-         backgroundColor: 'transparent'
-       },
+        '&:hover': {
+          backgroundColor: 'transparent'
+        },
       },
       '& svg': {
         height: 27

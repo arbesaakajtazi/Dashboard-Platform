@@ -15,7 +15,7 @@ let styles = ({palette}) => ({
   }
 })
 
-const wrapper = (props) => {
+const Wrapper = (props) => {
   const {classes} = props
   return (
     <div className={classes.root}>
@@ -24,4 +24,4 @@ const wrapper = (props) => {
   )
 }
 
-export default withStyles(styles)(wrapper)
+export default withStyles(styles)(Wrapper)

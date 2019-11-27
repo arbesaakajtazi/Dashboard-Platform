@@ -7,12 +7,13 @@ import DeleteIcon from 'presentations/Icons/DeleteIcon'
 import DotsIcon from 'presentations/Icons/DotsIcon'
 import {NavLink} from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
-import Card from 'presentations/Card/Card'
+import Card from 'presentations/Card/CardView'
+import Button from 'presentations/Button/Button'
 
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
-    width: `calc(33% - ${size.spacing * 2}px)`,
+    maxWidth: `calc(33% - ${size.spacing * 2}px)`,
     padding: `${size.spacing * 4}px`,
     margin: `0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
   },
@@ -52,9 +53,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     alignItems: 'flex-end'
   },
-  dotsSvg: {
-    fontSize: size.displayFontSize
-  },
   footer: {
     display: 'flex',
     flexFlow: 'row wrap'
@@ -68,34 +66,21 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     marginRight: 10,
     textDecoration: 'none',
   },
-  editCard: {
-    width: 95,
-    height: 77,
-    boxShadow: shadows[5],
-    position: 'absolute',
-    right: 50,
-    top: 50,
-    padding: `${size.spacing * 2}px`
-  },
-  edit: {
-    display: 'flex',
-    flexFlow: 'row',
-    paddingBottom: `${size.spacing}px`
-  },
-  delete: {
-    display: 'flex',
-    flexFlow: 'row'
-  },
   paper: {
     height: 80,
     width: 95,
+    backgroundColor: palette.primary.contrastText,
     padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
-    color: palette.text.default,
     fontFamily: typography.fontFamily,
     fontSize: size.defaultFontSize,
-    textTransform: 'lowercase'
+    textTransform: 'lowercase',
+    '& button': {
+      '& span': {
+        color: palette.text.default,
+      }
+    }
   },
   menuLink: {
     textDecoration: 'none',
@@ -129,7 +114,7 @@ class DashboardCard extends Component {
         <div className={classes.header}>
           <div className={classes.left}>
             {!!length && <div className={classes.childrenLength}>{length} <span>children</span></div>}
-              {moment(dashboard.createdAt).format('DD.MM.YYYY')}
+            {moment(dashboard.createdAt).format('DD.MM.YYYY')}
           </div>
           <Popover
             classes={{
@@ -147,29 +132,25 @@ class DashboardCard extends Component {
               horizontal: 'right'
             }}
           >
-            <div className={classes.edit}>
-              <IconButton onClick={event => {
+              <Button onClick={event => {
                 event.preventDefault()
                 onEditCard(dashboard)
               }}>
                 <EditIcon/>
-              </IconButton>
-              <div>
-                Edit
-              </div>
-            </div>
-            <div className={classes.delete}>
-              <IconButton onClick={() => onDeleteCard(dashboard)}>
+                <span>
+                edit
+              </span>
+              </Button>
+              <Button onClick={() => onDeleteCard(dashboard)}>
                 <DeleteIcon/>
-              </IconButton>
-              <div>
-                Delete
-              </div>
-            </div>
+                <span>
+                  delete
+                </span>
+              </Button>
           </Popover>
           <div className={classes.SvgWrapper}>
             <IconButton onClick={this.onOpen}>
-              <DotsIcon className={classes.dotsSvg}/>
+              <DotsIcon/>
             </IconButton>
           </div>
         </div>

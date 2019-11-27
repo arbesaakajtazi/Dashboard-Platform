@@ -7,7 +7,8 @@ import DeleteIcon from 'presentations/Icons/DeleteIcon'
 import DotsIcon from 'presentations/Icons/DotsIcon'
 import {NavLink} from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
-import Card from 'presentations/Card/Card'
+import Card from 'presentations/Card/CardView'
+import Button from 'presentations/Button/Button'
 
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
@@ -44,37 +45,20 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     alignItems: 'flex-end'
   },
-  dotsSvg: {
-    fontSize: size.displayFontSize
-  },
-  editCard: {
-    width: 95,
-    height: 77,
-    boxShadow: shadows[5],
-    position: 'absolute',
-    right: 50,
-    top: 50,
-    padding: `${size.spacing * 2}px`
-  },
-  edit: {
-    display: 'flex',
-    flexFlow: 'row',
-    paddingBottom: `${size.spacing}px`
-  },
-  delete: {
-    display: 'flex',
-    flexFlow: 'row'
-  },
   paper: {
     height: 80,
     width: 95,
     padding: `${size.spacing * 2}px`,
     overflow: 'hidden',
     boxShadow: shadows[5],
-    color: palette.text.default,
     fontFamily: typography.fontFamily,
     fontSize: size.defaultFontSize,
-    textTransform: 'lowercase'
+    textTransform: 'lowercase',
+    '& button': {
+      '& span': {
+        color: palette.text.default,
+      }
+    }
   },
   menuLink: {
     textDecoration: 'none',
@@ -84,9 +68,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     marginRight: 10,
     display: 'flex',
     flex: '0 0 auto',
-    minWidth: '10%',
   },
-
 })
 
 class DashboardListView extends Component {
@@ -121,36 +103,40 @@ class DashboardListView extends Component {
         <div className={classes.right}>
           {moment(dashboard.createdAt).format('DD.MM.YYYY')}
           <Popover
-            classes={{paper: classes.paper}}
+            classes={{
+              paper: classes.paper
+            }}
             onClose={this.onClose}
             open={open}
             anchorEl={anchorEl}
-            anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-            transformOrigin={{vertical: 'top', horizontal: 'right'}}
-            disableRestoreFocus>
-            <div className={classes.edit}>
-              <IconButton onClick={event => {
-                event.preventDefault()
-                onEditListView(dashboard)
-              }}>
-                <EditIcon/>
-              </IconButton>
-              <div>
-                Edit
-              </div>
-            </div>
-            <div className={classes.delete}>
-              <IconButton onClick={() => onDeleteListView(dashboard)}>
-                <DeleteIcon/>
-              </IconButton>
-              <div>
-                Delete
-              </div>
-            </div>
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right'
+            }}
+          >
+            <Button onClick={event => {
+              event.preventDefault()
+              onEditListView(dashboard)
+            }}>
+              <EditIcon/>
+              <span>
+                edit
+              </span>
+            </Button>
+            <Button onClick={() => onDeleteListView(dashboard)}>
+              <DeleteIcon/>
+              <span>
+                  delete
+                </span>
+            </Button>
           </Popover>
           <div className={classes.SvgWrapper}>
             <IconButton onClick={this.onOpen}>
-              <DotsIcon className={classes.dotsSvg}/>
+              <DotsIcon/>
             </IconButton>
           </div>
         </div>
