@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 
 const TreeMapIcon = (props) => {
   return (
-    <SvgIcon {...props} viewBox={'0 0 24 24'}>
+    <SvgIcon {...props} viewBox={'0 0 24 24'} fontSize={'large'}>
       viewBox="0 0 13.162 13.101">
       <g id="Group_10" data-name="Group 10" transform="translate(0 0)">
         <path id="Path_14" data-name="Path 14"

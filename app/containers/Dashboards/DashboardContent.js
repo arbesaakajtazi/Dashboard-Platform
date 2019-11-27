@@ -30,10 +30,6 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     display: 'flex',
     alignItems: 'end',
     padding: `${size.spacing}px ${size.spacing * 6}px`,
-    '& svg': {
-      width: 34,
-      height: 34
-    },
   },
   paper: {
     padding: `${size.spacing * 4}px 0px ${size.spacing * 2}px`,

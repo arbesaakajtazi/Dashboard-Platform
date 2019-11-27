@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 
 const ImagesIcon = (props) => {
   return (
-    <SvgIcon {...props} viewBox={'0 0 24 24'}>
+    <SvgIcon {...props} viewBox={'0 0 24 24'} fontSize={'large'}>
       <path id="Path_17" data-name="Path 17"
             d="M14.955,13.657l-.713.713a.3.3,0,0,1-.476,0l-.713-.713a1.747,1.747,0,0,0-1.189-.476,1.613,1.613,0,0,0-1.189.476,1.724,1.724,0,0,0,0,2.378l3.408,3.408,3.408-3.408a1.739,1.739,0,1,0-2.536-2.378Z"
             transform="translate(-7.426 -5.97)" fill="none"/>

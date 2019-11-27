@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 
 const NoteIcon = (props) => {
   return (
-    <SvgIcon {...props} viewBox={'0 0 24 24'}>
+    <SvgIcon {...props} viewBox={'0 0 24 24'} fontSize={'large'}>
       viewBox="0 0 14.132 14.037">
       <path id="Path_11" data-name="Path 11"
             d="M10.377,11.358H16.2a.656.656,0,0,0,.665-.665.612.612,0,0,0-.665-.665H10.377a.656.656,0,0,0-.665.665A.612.612,0,0,0,10.377,11.358Z"
