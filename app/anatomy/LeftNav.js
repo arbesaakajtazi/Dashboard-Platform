@@ -44,11 +44,11 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   children: {
     padding: `0 ${(size.spacing * 2) + 2}px`,
-    fontSize: size.menuLinks
+    fontSize: size.menuLinks,
   },
   menuLink: {
     color: palette.background.dark,
-    textDecoration: 'none'
+    textDecoration: 'none',
   },
   activeMenuLink: {
     color: palette.primary.main
@@ -87,7 +87,7 @@ class LeftNav extends Component {
                 to={`/dashboards/${dashboard.id}`}
                 className={classes.menuLink}
                 activeClassName={classes.activeMenuLink}
-              >{dashboard.name}</NavLink>
+              >{dashboard.name.substring(0, 20)}</NavLink>
               {dashboard.children.length > 0 ? buildHierarchy(dashboard.children, index + 1) : null}
             </li>
           ))}

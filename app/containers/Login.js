@@ -54,9 +54,22 @@ let styles = ({theme, size, palette, shadows, typography}) => ({
     },
     '& $focused': {
       color: palette.primary.main
+    },
+    '& $underline': {
+      color: palette.text.default,
+      '&:hover:not($focused):not($disabled)': {
+        '&:before': {
+          borderBottom: `1px solid ${palette.primary.main}`,
+        }
+      },
+      '&:after': {
+        borderBottom: `1px solid ${palette.primary.main}`,
+      }
     }
   },
   focused: {},
+  underline: {},
+  // disabled: {},
   contentWrapper: {
     padding: `${size.spacing * 5}px  ${size.spacing * 4}px`,
   },
@@ -143,6 +156,7 @@ class Login extends Component {
           <div className={classes.contentWrapper}>
             <TextField className={classes.textField}
                        InputLabelProps={{classes: {focused: classes.focused}}}
+                       InputProps={{classes: {underline: classes.underline}}}
                        name="username"
                        label="username"
                        value={session.username}
@@ -151,6 +165,7 @@ class Login extends Component {
             />
             <TextField className={classes.textField}
                        InputLabelProps={{classes: {focused: classes.focused}}}
+                       InputProps={{classes: {underline: classes.underline}}}
                        name="password"
                        label="password"
                        type="password"

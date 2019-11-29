@@ -13,9 +13,12 @@ import Button from 'presentations/Button/Button'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
-    maxWidth: `calc(33% - ${size.spacing * 2}px)`,
+    width: `calc(33% - ${size.spacing * 2}px)`,
     padding: `${size.spacing * 4}px`,
     margin: `0px ${(size.spacing * 3) - 4}px ${(size.spacing * 3) - 4}px 0px`,
+    display: 'flex',
+    flexFlow: 'column',
+    justifyContent: 'space-between'
   },
   header: {
     fontSize: size.smallFontSize,
@@ -42,20 +45,14 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     padding: `${size.spacing * 4}px 0px`
   },
   description: {
-    paddingTop: `${size.spacing * 2}px`
+    paddingTop: `${size.spacing * 2}px`,
+    overflow: 'hidden',
+    height: 55
   },
   left: {
     display: 'flex',
     alignItems: 'center',
     lineHeight: `${size.spacing * 2}px`
-  },
-  SvgWrapper: {
-    display: 'flex',
-    alignItems: 'flex-end'
-  },
-  footer: {
-    display: 'flex',
-    flexFlow: 'row wrap'
   },
   children: {
     color: palette.primary.main,
@@ -88,6 +85,14 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     fontSize: size.headingFontSize,
     fontWeight: typography.weight.bold,
   },
+  footer: {
+    display: 'flex'
+  },
+  navLink: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
+  }
 })
 
 class DashboardCard extends Component {
@@ -111,60 +116,65 @@ class DashboardCard extends Component {
     const open = !!anchorEl
     return (
       <Card className={classes.root} key={dashboard.id}>
-        <div className={classes.header}>
-          <div className={classes.left}>
-            {!!length && <div className={classes.childrenLength}>{length} <span>children</span></div>}
-            {moment(dashboard.createdAt).format('DD.MM.YYYY')}
-          </div>
-          <Popover
-            classes={{
-              paper: classes.paper
-            }}
-            onClose={this.onClose}
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right'
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right'
-            }}
-          >
+        <div>
+          <div className={classes.header}>
+            <div className={classes.left}>
+              {!!length && <div className={classes.childrenLength}>{length} <span>children</span></div>}
+              {moment(dashboard.createdAt).format('DD.MM.YYYY')}
+            </div>
+            <Popover
+              classes={{
+                paper: classes.paper
+              }}
+              onClose={this.onClose}
+              open={open}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+            >
               <Button onClick={event => {
                 event.preventDefault()
                 onEditCard(dashboard)
+                this.onClose()
               }}>
                 <EditIcon/>
                 <span>
                 edit
               </span>
               </Button>
-              <Button onClick={() => onDeleteCard(dashboard)}>
+              <Button onClick={() => {
+                onDeleteCard(dashboard)
+                this.onClose()
+              }}>
                 <DeleteIcon/>
                 <span>
                   delete
                 </span>
               </Button>
-          </Popover>
-          <div className={classes.SvgWrapper}>
+            </Popover>
             <IconButton onClick={this.onOpen}>
               <DotsIcon/>
             </IconButton>
           </div>
-        </div>
 
-        <div className={classes.content}>
-          <NavLink
-            to={`/dashboards/${dashboard.id}`}
-            className={classes.menuLink}
-          >{dashboard.name}</NavLink>
-          <Typography variant={"body2"} className={classes.description}>
-            {dashboard.description}
-          </Typography>
+          <div className={classes.content}>
+            <div className={classes.navLink}>
+              <NavLink
+              to={`/dashboards/${dashboard.id}`}
+              className={classes.menuLink}
+            >{dashboard.name}</NavLink>
+            </div>
+            <Typography variant={"body2"} className={classes.description}>
+              {dashboard.description}
+            </Typography>
+          </div>
         </div>
-
         <div className={classes.footer}>
           {!!dashboard.children && dashboard.children.map(next => {
             return <NavLink

@@ -17,7 +17,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   paper: {
     width: `calc(33% - ${size.spacing * 2}px)`,
-    backgroundColor: palette.primary.contrastText
+    backgroundColor: palette.background.paper
   },
   dialogContent: {
     padding: `0px ${size.spacing * 6}px`,
@@ -33,7 +33,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     },
     display: 'flex',
     justifyContent: 'flex-end'
-  }
+  },
 })
 
 class DashboardsForm extends Component {

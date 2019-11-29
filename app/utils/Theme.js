@@ -152,12 +152,12 @@ const theme = (type = 'light') => ({
     MuiFilledInput: {
       root: {
         borderRadius: 4,
-        backgroundColor: '#D9E0E6',
+        backgroundColor: palette[type].background.main,
         '&$focused': {
-          backgroundColor: '#D9E0E6',
+          backgroundColor: palette[type].background.main,
         },
         '&:hover': {
-          backgroundColor: '#D9E0E6',
+          backgroundColor: palette[type].background.main,
         }
       },
       underline: {

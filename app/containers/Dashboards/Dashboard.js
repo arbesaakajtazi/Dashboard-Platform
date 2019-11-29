@@ -28,7 +28,6 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     width: '100%',
     border: `1px solid transparent`,
     borderRadius: size.baseRadius,
-    backgroundColor: palette.background.main,
     '& label': {
       fontSize: size.defaultFontSize,
       color: palette.textColor,
@@ -79,7 +78,7 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     boxShadow: shadows[2],
     position: 'absolute',
     bottom: 50,
-    right: 80
+    right: 80,
   },
   logOut: {
     display: 'flex',

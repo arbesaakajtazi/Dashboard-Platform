@@ -31,11 +31,10 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
   left: {
     display: 'flex',
-    maxWidth: '85%',
+    overflow: 'hidden',
     alignItems: 'center'
   },
   description: {
-    flex: 2,
     overflow: 'hidden',
     flexFlow: 'row nowrap',
     whiteSpace: 'nowrap',
@@ -65,10 +64,14 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     color: palette.text.default,
     fontSize: size.headerFontSize,
     fontWeight: typography.weight.bold,
-    marginRight: 10,
-    display: 'flex',
-    flex: '0 0 auto',
   },
+  navLink: {
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    marginRight: 10,
+    minWidth: '10%'
+  }
 })
 
 class DashboardListView extends Component {
@@ -92,10 +95,12 @@ class DashboardListView extends Component {
     return (
       <Card className={classes.root}>
         <div className={classes.left}>
+          <div className={classes.navLink}>
           <NavLink
             to={`/dashboards/${dashboard.id}`}
             className={classes.menuLink}
           >{dashboard.name}</NavLink>
+          </div>
           <Typography variant={"body2"} className={classes.description}>
             {dashboard.description}
           </Typography>

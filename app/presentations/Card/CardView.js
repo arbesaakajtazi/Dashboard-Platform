@@ -7,7 +7,6 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     backgroundColor: palette.background.paper,
     boxShadow: shadows[4],
     borderRadius: size.baseRadius,
-    minWidth: 300
   },
 })
 const Card = (props) => {
