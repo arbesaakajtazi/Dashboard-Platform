@@ -4,6 +4,7 @@ import createBrowserHistory from 'history/createBrowserHistory'
 import api from 'middleware/Api'
 import sessionAuthReducer from 'reducers/Auth/Session'
 import dashboards from 'reducers/Dashboards/Dashboards'
+import dashboardContent from 'reducers/DashboardsContent/DashboardsContent'
 import theme from 'reducers/Theme/Theme'
 import {sessionReducer, sessionService} from 'redux-react-session'
 
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   sessionAuthReducer,
   session: sessionReducer,
   dashboards,
+  dashboardContent,
   theme
 })
 

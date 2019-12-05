@@ -86,7 +86,8 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     fontWeight: typography.weight.bold,
   },
   footer: {
-    display: 'flex'
+    display: 'flex',
+    flexFlow: 'row wrap'
   },
   navLink: {
     whiteSpace: 'nowrap',
@@ -131,7 +132,7 @@ class DashboardCard extends Component {
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'center'
+                horizontal: 'right'
               }}
               transformOrigin={{
                 vertical: 'top',

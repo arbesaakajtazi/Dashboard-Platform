@@ -12,9 +12,8 @@ const dashboards = (state = [], action) => {
       return state.map(next => {
         if (next.id === action.dashboard.id) {
           return action.dashboard
-        } else {
-          return next
         }
+        return next
       })
     default:
       return state

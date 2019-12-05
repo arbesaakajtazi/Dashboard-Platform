@@ -10,15 +10,18 @@ import SearchIcon from 'presentations/Icons/SearchIcon'
 import GroupDashboardsIcon from 'presentations/Icons/GroupDashboardsIcon'
 import ListDashboardsIcon from 'presentations/Icons/ListDashboardIcon'
 import DashboardsForm from 'containers/Dashboards/DashboardsForm'
-import DashboardListView from 'containers/Dashboards/DashboardsListView'
-import DashboardsCard from 'containers/Dashboards/DashboardsCard'
+import DashboardListView from 'presentations/DashboardList/DashboardsListView'
+import DashboardsCard from 'presentations/DashboardCards/DashboardsCard'
 import {deleteDashboards, fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
 import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
 import DashboardContent from 'containers/Dashboards/DashboardContent'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
-  root: {},
+  root: {
+    position: 'relative',
+    height: '100vh'
+  },
   header: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -77,8 +80,8 @@ let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     padding: 0,
     boxShadow: shadows[2],
     position: 'absolute',
-    bottom: 50,
-    right: 80,
+    bottom: 80,
+    right: 0,
   },
   logOut: {
     display: 'flex',
@@ -186,13 +189,13 @@ class Dashboard extends Component {
   }
 
   render() {
-    const {session: {user: {username = ''} = {}} = {}, classes, search, dashboards, filtered} = this.props
+    const {session: {user: {username = ''} = {}} = {}, classes, search, filtered} = this.props
     const {editing = {}, selectedDashboard, active} = this.state
-    console.log("EDITING", editing)
     const child = children(filtered, selectedDashboard)
 
     return (
       <Content>
+        <div className={classes.root}>
         <div className={classes.logOut}>
           <Typography variant={'body1'}>Welcome {username}</Typography>
           <Button onClick={this.onLogOutClicked} variant='flat' color='primary'>Log Out</Button>
@@ -200,18 +203,19 @@ class Dashboard extends Component {
         <div className={classes.header}>
           <div className={classes.filterWrapper}>
             <div className={classes.search}>
-              <TextField label='Search'
-                         value={search}
-                         onChange={this.onChange}
-                         className={classes.textField}
-                         variant='filled'
-                         InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
-                         InputProps={{
-                           endAdornment: (
-                             <InputAdornment position="end">
-                               <SearchIcon/>
-                             </InputAdornment>)
-                         }}
+              <TextField
+                label='Search'
+                 value={search}
+                 onChange={this.onChange}
+                 className={classes.textField}
+                 variant='filled'
+                 InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
+                 InputProps={{
+                   endAdornment: (
+                     <InputAdornment position="end">
+                       <SearchIcon/>
+                     </InputAdornment>)
+                 }}
               />
             </div>
             <div className={classes.filter}>
@@ -248,7 +252,8 @@ class Dashboard extends Component {
         <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
           <AddIcon/>
         </Button>
-        <DashboardContent/>
+        </div>
+        {selectedDashboard && <DashboardContent/>}
       </Content>
     )
   }

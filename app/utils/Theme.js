@@ -23,7 +23,8 @@ const palette = {
       primary: '#A3B3C2',
       main: '#D9E0E6',
       dark: '#94A6B8',
-      paper: '#fff'
+      paper: '#fff',
+      note: '#F6F096'
     },
     label: '#D9E0E6',
   },
@@ -48,7 +49,8 @@ const palette = {
       primary: '#A3B3C2',
       main: '#293642',
       dark: '#94A6B8',
-      paper: '#8CA0B3'
+      paper: '#8CA0B3',
+      note: '#F6F096'
     },
   }
 }

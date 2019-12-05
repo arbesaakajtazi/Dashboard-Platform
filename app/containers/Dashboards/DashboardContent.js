@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
+import {connect} from 'react-redux'
 import Button from 'presentations/Button/Button'
 import AddIcon from '@material-ui/icons/Add'
 import {Menu, MenuItem} from '@material-ui/core'
@@ -10,10 +11,17 @@ import BarGraphIcon from 'presentations/Icons/BarGraphIcon'
 import PieGraphIcon from 'presentations/Icons/PieGrapchIcon'
 import TreeMapIcon from 'presentations/Icons/TreeMapIcon'
 import InformationIcon from 'presentations/Icons/InformationIcon'
+import {useParams} from 'react-router-dom'
+import {fetchDashboardContent} from 'reducers/DashboardsContent/DashboardsContentActions'
+import Note from 'containers/Dashboards/Note'
+import Image from "./Image";
+import dashboardsContent from "../../reducers/DashboardsContent/DashboardsContent";
+import Graph from "./Graph";
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
-    padding: `${size.spacing}px 0px 0px 0px`
+    position: 'relative',
+    height: '100%'
   },
   addButton: {
     border: 'none',
@@ -24,7 +32,7 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     boxShadow: shadows[2],
     position: 'absolute',
     bottom: 0,
-    right: 80,
+    right: 0,
     zIndex: zIndex.popover
   },
   menuItem: {
@@ -43,7 +51,12 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     fontWeight: typography.weight.medium,
     '& svg': {
       marginRight: size.spacing
-    }
+    },
+    paddingBottom: 50
+  },
+  dashboardContentWrapper: {
+    display: 'flex',
+    flexFlow: 'row wrap'
   }
 })
 
@@ -56,24 +69,44 @@ const options = [
   {svg: <TreeMapIcon/>, name: 'Tree Map'},
 ]
 
-
 const DashboardContent = (props) => {
-  const {classes} = props
+  const {classes, fetchDashboardContent, dashboardContent: {content = ''}} = props
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
+  const {id} = useParams()
+
+  useEffect(() => {
+    fetchDashboardContent(id)
+  }, [id])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
-    console.log("event.target", event.currentTarget)
   }
 
   const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const createContentType = (content, index) => {
+    switch (content.type) {
+      case 'TEXT':
+        return <Note key={index} content={content}/>
+      case 'IMAGE':
+        return <Image key={index} content={content}/>
+      case 'LINE':
+      case 'BAR':
+      case 'PIE':
+      case 'TREE':
+        return <Graph key={index} content={content}/>
+    }
+  }
+
   return (
-    <div>
+    <div className={classes.root}>
       <div className={classes.information}><InformationIcon/>Information</div>
+      <div className={classes.dashboardContentWrapper}>
+        {!!content && content.map(createContentType)}
+      </div>
       <Button variant='flat' color='primary' className={classes.addButton} onClick={handleClick}>
         <AddIcon/>
       </Button>
@@ -93,9 +126,10 @@ const DashboardContent = (props) => {
           horizontal: 'right'
         }}
         getContentAnchorEl={null}
+        onClick={handleClose}
       >
         {options.map(option => (
-          <MenuItem key={option.name} onClick={handleClose} className={classes.menuItem}>
+          <MenuItem key={option.name} className={classes.menuItem}>
             {option.svg}{option.name}
           </MenuItem>
         ))}
@@ -103,5 +137,13 @@ const DashboardContent = (props) => {
     </div>
   )
 }
+const mapStateToProps = (store) => {
+  return {
+    dashboardContent: store.dashboardContent.content
+  }
+}
+const mapDispatchToProps = {
+  fetchDashboardContent,
+}
 
-export default withStyles(styles)(DashboardContent)
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DashboardContent))

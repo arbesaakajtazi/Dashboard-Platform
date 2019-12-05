@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
-import DashboardListView from 'containers/Dashboards/DashboardListView'
+import DashboardListView from 'presentations/DashboardList/DashboardListView'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -17,9 +17,8 @@ class DashboardsListView extends Component {
     const {dashboards, classes, onEdit, onDelete} = this.props
 
     const createRow = (dashboards, index) => {
-      const notNull = dashboards.length > 0
       return (
-        notNull && <div>
+        <div>
           {dashboards.map(dashboard => (
             <div key={dashboard.id} className={index && classes.childrenDashboard}>
               <DashboardListView dashboard={dashboard}

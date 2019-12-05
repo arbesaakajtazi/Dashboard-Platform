@@ -58,7 +58,6 @@ export const fetchDashboards = () => {
       }
     }).then(data => {
       dispatch(receiveDashboards(data))
-      console.log('receiveDashboards', data)
       return data
     }, error => {
       dispatch(displayMessage(error))
@@ -120,7 +119,6 @@ export const updateDashboards = (dashboard) => {
       }
     }).then((dashboard) => {
       dispatch(updateDashboard(dashboard))
-      console.log("dashboard", dashboard)
       return dashboard
     }, (error) => {
       dispatch(displayMessage(error))

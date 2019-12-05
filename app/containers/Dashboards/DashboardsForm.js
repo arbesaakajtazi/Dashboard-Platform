@@ -86,7 +86,6 @@ class DashboardsForm extends Component {
   render() {
     const {classes, open, onCancelClicked} = this.props
     const {item = {}} = this.state
-    console.log('ITEM', item)
     return (
       <Dialog open={open} className={classes.root} classes={{paper: classes.paper}}>
         <Typography variant={"h4"} className={classes.dialogTitle}>

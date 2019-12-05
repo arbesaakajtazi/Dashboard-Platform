@@ -1,6 +1,8 @@
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
+import Typography from "@material-ui/core/Typography";
+import Chart from 'presentations/Chart'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -9,12 +11,11 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     borderRadius: size.baseRadius,
   },
 })
-const Card = (props) => {
-  const {classes, children, activeDashboardView, className} = props
-  return (
-    <div className={classNames(classes.root, className)}>
-      {children}
-    </div>
-  )
+
+const Card = ({options, classes, children, activeDashboardView, className, title, titleClass, graphClass, ...other}) => {
+  return <div className={classNames(classes.root, className)} {...other}>
+    <Typography variant={'subtitle1'}>{title}</Typography>
+    {children || <Chart options={options}/>}
+  </div>
 }
 export default withStyles(styles)(Card)

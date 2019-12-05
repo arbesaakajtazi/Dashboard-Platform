@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
-import DashboardCard from 'containers/Dashboards/DashboardCard'
+import DashboardCard from 'presentations/DashboardCards/DashboardCard'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
