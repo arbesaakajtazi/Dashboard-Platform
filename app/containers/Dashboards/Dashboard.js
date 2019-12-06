@@ -196,62 +196,62 @@ class Dashboard extends Component {
     return (
       <Content>
         <div className={classes.root}>
-        <div className={classes.logOut}>
-          <Typography variant={'body1'}>Welcome {username}</Typography>
-          <Button onClick={this.onLogOutClicked} variant='flat' color='primary'>Log Out</Button>
-        </div>
-        <div className={classes.header}>
-          <div className={classes.filterWrapper}>
-            <div className={classes.search}>
-              <TextField
-                label='Search'
-                 value={search}
-                 onChange={this.onChange}
-                 className={classes.textField}
-                 variant='filled'
-                 InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
-                 InputProps={{
-                   endAdornment: (
-                     <InputAdornment position="end">
-                       <SearchIcon/>
-                     </InputAdornment>)
-                 }}
-              />
-            </div>
-            <div className={classes.filter}>
-              <div className={classes.filterContent}>
-                <FilterIcon/>
-                <div className={classes.filterText}>Filters</div>
+          <div className={classes.logOut}>
+            <Typography variant={'body1'}>Welcome {username}</Typography>
+            <Button onClick={this.onLogOutClicked} variant='flat' color='primary'>Log Out</Button>
+          </div>
+          <div className={classes.header}>
+            <div className={classes.filterWrapper}>
+              <div className={classes.search}>
+                <TextField
+                  label='Search'
+                  value={search}
+                  onChange={this.onChange}
+                  className={classes.textField}
+                  variant='filled'
+                  InputLabelProps={{classes: {focused: classes.focused, shrink: classes.shrink}}}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <SearchIcon/>
+                      </InputAdornment>)
+                  }}
+                />
+              </div>
+              <div className={classes.filter}>
+                <div className={classes.filterContent}>
+                  <FilterIcon/>
+                  <div className={classes.filterText}>Filters</div>
+                </div>
               </div>
             </div>
+            <div>
+              <IconButton onClick={this.onRequestChange}>
+                <ListDashboardsIcon className={active ? classes.activeClassName : classes.groupButton}
+                />
+              </IconButton>
+              <IconButton className={classes.list} onClick={this.onRequestChange}>
+                <GroupDashboardsIcon className={!active ? classes.activeClassName : classes.groupButton}
+                />
+              </IconButton>
+            </div>
           </div>
-          <div>
-            <IconButton>
-              <ListDashboardsIcon className={active ? classes.activeClassName : classes.groupButton}
-                                  onClick={this.onRequestChange}/>
-            </IconButton>
-            <IconButton className={classes.list}>
-              <GroupDashboardsIcon className={!active ? classes.activeClassName : classes.groupButton}
-                                   onClick={this.onRequestChange}/>
-            </IconButton>
-          </div>
-        </div>
-        {!active ?
-          <DashboardsCard dashboards={child}
-                          onEdit={this.onEdit}
-                          onDelete={this.onDelete}
-          /> :
-          <DashboardListView dashboards={child}
-                             onEdit={this.onEdit}
-                             onDelete={this.onDelete}
-          />}
-        <DashboardsForm item={editing}
-                        open={!!editing.id}
-                        onCancelClicked={this.onCancelClicked}
-                        parent={selectedDashboard}/>
-        <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
-          <AddIcon/>
-        </Button>
+          {!active ?
+            <DashboardsCard dashboards={child}
+                            onEdit={this.onEdit}
+                            onDelete={this.onDelete}
+            /> :
+            <DashboardListView dashboards={child}
+                               onEdit={this.onEdit}
+                               onDelete={this.onDelete}
+            />}
+          <DashboardsForm item={editing}
+                          open={!!editing.id}
+                          onCancelClicked={this.onCancelClicked}
+                          parent={selectedDashboard}/>
+          <Button variant='flat' color='primary' className={classes.addButton} onClick={this.onRequestAdd}>
+            <AddIcon/>
+          </Button>
         </div>
         {selectedDashboard && <DashboardContent/>}
       </Content>

@@ -60,7 +60,8 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     border: `1px solid ${palette.secondary.dark}`,
     borderRadius: `${size.baseRadius * 7}px`,
     padding: `${size.spacing}px ${size.spacing * 2}px`,
-    marginRight: 10,
+    marginRight: size.spacing,
+    marginBottom: size.spacing,
     textDecoration: 'none',
   },
   paper: {

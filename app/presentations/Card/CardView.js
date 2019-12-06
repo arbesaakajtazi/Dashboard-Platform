@@ -14,8 +14,8 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
 
 const Card = ({options, classes, children, activeDashboardView, className, title, titleClass, graphClass, ...other}) => {
   return <div className={classNames(classes.root, className)} {...other}>
-    <Typography variant={'subtitle1'}>{title}</Typography>
-    {children || <Chart options={options}/>}
+    {title && <Typography variant={'subtitle1'}>{title}</Typography>}
+    {children || <Chart options={options} className={graphClass}/>}
   </div>
 }
 export default withStyles(styles)(Card)

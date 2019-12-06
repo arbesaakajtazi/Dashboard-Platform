@@ -1,18 +1,31 @@
 import ACTION_TYPES from 'reducers/DashboardsContent/DashboardsContentActionTypes'
 
-const dashboardContent = (state = [], action) => {
+const initialState = {
+  content: []
+}
+const content = (state = [], action) => {
   switch (action.type) {
     case ACTION_TYPES.RECEIVE_CONTENT:
-      return action.content
-    case ACTION_TYPES.CONTENT_NOT_FOUND:
-      return []
+    case ACTION_TYPES.UPDATE_CONTENT:
+      return action.data.content
     default:
       return state
   }
 }
+
+const board = (state = initialState, action) => {
+  switch (action.type) {
+    case ACTION_TYPES.RECEIVE_CONTENT:
+      return {...action.data, content: content(state.content, action)}
+    case ACTION_TYPES.CONTENT_NOT_FOUND:
+      return initialState
+    default:
+      return {...action.data, content: content(state.content, action)}
+  }
+}
 const dashboardsContent = (state = {}, action) => {
   return {
-    content: dashboardContent(state.content, action)
+    board: board(state.board, action)
   }
 }
 

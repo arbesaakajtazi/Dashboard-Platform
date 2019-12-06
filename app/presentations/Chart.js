@@ -10,7 +10,7 @@ const styles = {
   chartWrapper: {
     width: '100%',
     height: '100%',
-    display: 'flex'
+    // display: 'flex'
   }
 }
 
@@ -47,7 +47,10 @@ class Chart extends React.Component {
     }
   }
 
+
+
   setOption() {
+    const padding = 32
     const { options, onOptionsChanged } = this.props
     if (!options) {
       if (this.chart) {
@@ -55,21 +58,29 @@ class Chart extends React.Component {
       }
       return
     }
-    const padding = 32
     const graph = {
       ...options,
+      title:{
+        left: 'center',
+        textStyle: {
+          color: '#314151'
+        }
+      },
       grid: {
-        left: padding,
-        right: padding,
+        left: '15%',
+        right: '15%',
         top: padding,
         bottom: padding,
+        containLabel: true,
         ...options.grid
       },
       tooltip: {
-        show: true
+        type: 'hideTip'
       },
       legend: {
-        orient: 'vertical',
+        show: true,
+        orient: 'horizontal',
+        left: 'left',
       }
     }
     try {

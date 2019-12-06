@@ -7,10 +7,10 @@ export const requestDashboardContent = () => {
   }
 }
 
-export const receiveDashboardContent = (content) => {
+export const receiveDashboardContent = (data) => {
   return {
     type: ACTION_TYPES.RECEIVE_CONTENT,
-    content
+    data
   }
 }
 
@@ -19,6 +19,14 @@ export const contentNotFound = () => {
     type: ACTION_TYPES.CONTENT_NOT_FOUND
   }
 }
+
+export const addContent = (data) => {
+  return {
+    type: ACTION_TYPES.UPDATE_CONTENT,
+    data
+  }
+}
+
 export const displayMessage = (response) => {
   return {
     type: ACTION_TYPES.DISPLAY_MESSAGE,
@@ -33,12 +41,33 @@ export const fetchDashboardContent = (dashboardId) => {
       [CALL_API]: {
         endpoint: `/dashboard/${dashboardId}/content/`
       }
-    }).then(content => {
-        dispatch(receiveDashboardContent(content))
-        return content
+    }).then(data => {
+        dispatch(receiveDashboardContent(data))
+        return data
       },
       error => {
         dispatch(contentNotFound())
+        dispatch(displayMessage(error))
+        return error
+      })
+  }
+}
+export const addContents = (data) => {
+  return dispatch => {
+    dispatch(requestDashboardContent())
+    return dispatch({
+      [CALL_API]: {
+        endpoint: `/dashboard/content/`,
+        options: {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }
+      }
+    }).then(data => {
+        dispatch(addContent(data))
+        return data
+      },
+      error => {
         dispatch(displayMessage(error))
         return error
       })

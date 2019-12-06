@@ -5,26 +5,23 @@ import Card from 'presentations/Card/CardView'
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
     marginRight: size.spacing * 2,
+    marginBottom: size.spacing * 2,
     padding: size.spacing * 2,
     width: 400,
-    height: 500
+    minHeight: 300
   }
 })
 
 const Graph = (props) => {
   const {classes, content} = props
 
-  const graphData = content.data.map(next => {
-    return {
-      name: next.category,
-      value: next.value
-    }
-  })
+  const graphData = content.data
+  console.log('graphData', graphData)
 
-  const options = {
+  const withAxis = {
     xAxis: {
       type: 'category',
-      data: content.data.map(next => next.category)
+      data: content.data.map(next => next.name)
     },
     yAxis: {
       type: 'value'
@@ -36,6 +33,18 @@ const Graph = (props) => {
       }
     ]
   }
+  const noAxis = {
+    series: [
+      {
+        name: 'Data',
+        data: graphData,
+        type: content.type.toLowerCase()
+      }
+    ]
+  }
+
+  const options = (content.type === 'PIE' || content.type === 'TREEMAP') ? noAxis : withAxis
+
   return (
     <Card className={classes.root} options={options} {...props} title={'New widget'}/>
   )

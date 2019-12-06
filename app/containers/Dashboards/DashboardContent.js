@@ -12,11 +12,11 @@ import PieGraphIcon from 'presentations/Icons/PieGrapchIcon'
 import TreeMapIcon from 'presentations/Icons/TreeMapIcon'
 import InformationIcon from 'presentations/Icons/InformationIcon'
 import {useParams} from 'react-router-dom'
-import {fetchDashboardContent} from 'reducers/DashboardsContent/DashboardsContentActions'
+import {fetchDashboardContent, addContents} from 'reducers/DashboardsContent/DashboardsContentActions'
 import Note from 'containers/Dashboards/Note'
-import Image from "./Image";
-import dashboardsContent from "../../reducers/DashboardsContent/DashboardsContent";
-import Graph from "./Graph";
+import Image from 'containers/Dashboards/Image'
+import Graph from 'containers/Dashboards/Graph';
+
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -61,16 +61,17 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
 })
 
 const options = [
-  {svg: <NoteIcon/>, name: 'Note'},
-  {svg: <ImagesIcon/>, name: 'Image'},
-  {svg: <LineGraphIcon/>, name: 'Line Graph'},
-  {svg: <BarGraphIcon/>, name: 'Bar Graph'},
-  {svg: <PieGraphIcon/>, name: 'Pie Graph'},
-  {svg: <TreeMapIcon/>, name: 'Tree Map'},
+  {svg: <NoteIcon/>, name: 'Note', type: 'TEXT'},
+  {svg: <ImagesIcon/>, name: 'Image', type: 'IMAGE'},
+  {svg: <LineGraphIcon/>, name: 'Line Graph', type: 'LINE'},
+  {svg: <BarGraphIcon/>, name: 'Bar Graph', type: 'BAR'},
+  {svg: <PieGraphIcon/>, name: 'Pie Graph', type: 'PIE'},
+  {svg: <TreeMapIcon/>, name: 'Tree Map', type: 'TREEMAP'},
 ]
 
 const DashboardContent = (props) => {
-  const {classes, fetchDashboardContent, dashboardContent: {content = ''}} = props
+  const {classes, fetchDashboardContent, dashboardContent, addContents} = props
+  const {content} = dashboardContent
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const {id} = useParams()
@@ -96,9 +97,38 @@ const DashboardContent = (props) => {
       case 'LINE':
       case 'BAR':
       case 'PIE':
-      case 'TREE':
+      case 'TREEMAP':
         return <Graph key={index} content={content}/>
     }
+  }
+
+  const contentType = (type) => {
+    switch (type) {
+      case 'LINE':
+      case 'BAR':
+      case 'PIE':
+      case 'TREEMAP':
+        return {data: [{name: 'yo', value: 23}, {name: 'yo2', value: 21}, {name: 'yo3', value: 25}]}
+      case 'TEXT':
+        return {text: ''}
+      case 'IMAGE':
+        return {url: 'https://heartheboatsing.files.wordpress.com/2016/10/little-boat.jpg'}
+    }
+  }
+
+  const onClickAdd = (type) => {
+    addContents({
+      dashboardId: id,
+      ...dashboardContent,
+      content: [
+        ...content,
+        {
+          type,
+          ...contentType(type)
+        }
+      ]
+    })
+    console.log("contentType", contentType(type))
   }
 
   return (
@@ -129,7 +159,7 @@ const DashboardContent = (props) => {
         onClick={handleClose}
       >
         {options.map(option => (
-          <MenuItem key={option.name} className={classes.menuItem}>
+          <MenuItem key={option.name} className={classes.menuItem} onClick={() => onClickAdd(option.type)}>
             {option.svg}{option.name}
           </MenuItem>
         ))}
@@ -139,11 +169,12 @@ const DashboardContent = (props) => {
 }
 const mapStateToProps = (store) => {
   return {
-    dashboardContent: store.dashboardContent.content
+    dashboardContent: store.dashboardContent.board
   }
 }
 const mapDispatchToProps = {
   fetchDashboardContent,
+  addContents,
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DashboardContent))
