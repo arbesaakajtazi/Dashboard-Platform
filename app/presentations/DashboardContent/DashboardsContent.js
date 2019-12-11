@@ -12,10 +12,17 @@ import PieGraphIcon from 'presentations/Icons/PieGrapchIcon'
 import TreeMapIcon from 'presentations/Icons/TreeMapIcon'
 import InformationIcon from 'presentations/Icons/InformationIcon'
 import {useParams} from 'react-router-dom'
-import {fetchDashboardContent, addContents} from 'reducers/DashboardsContent/DashboardsContentActions'
-import Note from 'containers/Dashboards/Note'
-import Image from 'containers/Dashboards/Image'
-import Graph from 'containers/Dashboards/Graph';
+import {
+  fetchContent,
+  updateContent,
+  removeContent,
+  synchronize
+} from 'reducers/DashboardsContent/DashboardsContentActions'
+import Note from 'presentations/DashboardContent/WidgetTypes/Note'
+import Image from 'presentations/DashboardContent/WidgetTypes/Image'
+import Graph from 'presentations/DashboardContent/WidgetTypes/Graph'
+import {WIDGETS} from 'Constants'
+import WidgetContent from "./DashboardContent";
 
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
@@ -61,24 +68,29 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
 })
 
 const options = [
-  {svg: <NoteIcon/>, name: 'Note', type: 'TEXT'},
-  {svg: <ImagesIcon/>, name: 'Image', type: 'IMAGE'},
-  {svg: <LineGraphIcon/>, name: 'Line Graph', type: 'LINE'},
-  {svg: <BarGraphIcon/>, name: 'Bar Graph', type: 'BAR'},
-  {svg: <PieGraphIcon/>, name: 'Pie Graph', type: 'PIE'},
-  {svg: <TreeMapIcon/>, name: 'Tree Map', type: 'TREEMAP'},
+  {svg: <NoteIcon/>, name: 'Note', type: WIDGETS.TEXT},
+  {svg: <ImagesIcon/>, name: 'Image', type: WIDGETS.IMAGE},
+  {svg: <LineGraphIcon/>, name: 'Line Graph', type: WIDGETS.GRAPH_TYPE.LINE},
+  {svg: <BarGraphIcon/>, name: 'Bar Graph', type: WIDGETS.GRAPH_TYPE.BAR},
+  {svg: <PieGraphIcon/>, name: 'Pie Graph', type: WIDGETS.GRAPH_TYPE.PIE},
+  {svg: <TreeMapIcon/>, name: 'Tree Map', type: WIDGETS.GRAPH_TYPE.TREEMAP},
 ]
 
-const DashboardContent = (props) => {
-  const {classes, fetchDashboardContent, dashboardContent, addContents} = props
-  const {content} = dashboardContent
+const DashboardsContent = (props) => {
+  const {classes, fetchContent, board, synchronize} = props
+  const {content, actionId} = board
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
   const {id} = useParams()
 
   useEffect(() => {
-    fetchDashboardContent(id)
+    fetchContent(id)
   }, [id])
+
+  useEffect(() => {
+    if (!!actionId)
+      synchronize(board, id)
+  }, [actionId])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
@@ -88,54 +100,35 @@ const DashboardContent = (props) => {
     setAnchorEl(null)
   }
 
-  const createContentType = (content, index) => {
-    switch (content.type) {
-      case 'TEXT':
-        return <Note key={index} content={content}/>
-      case 'IMAGE':
-        return <Image key={index} content={content}/>
-      case 'LINE':
-      case 'BAR':
-      case 'PIE':
-      case 'TREEMAP':
-        return <Graph key={index} content={content}/>
-    }
+  const addOrUpdate = (item) => {
+    const {updateContent} = props
+    updateContent(item)
   }
 
-  const contentType = (type) => {
-    switch (type) {
-      case 'LINE':
-      case 'BAR':
-      case 'PIE':
-      case 'TREEMAP':
-        return {data: [{name: 'yo', value: 23}, {name: 'yo2', value: 21}, {name: 'yo3', value: 25}]}
-      case 'TEXT':
-        return {text: ''}
-      case 'IMAGE':
-        return {url: 'https://heartheboatsing.files.wordpress.com/2016/10/little-boat.jpg'}
-    }
+  const addWidget = (type) => {
+    // TODO: add initial layout to be at the bottom of the container
+    addOrUpdate({type})
   }
 
-  const onClickAdd = (type) => {
-    addContents({
-      dashboardId: id,
-      ...dashboardContent,
-      content: [
-        ...content,
-        {
-          type,
-          ...contentType(type)
-        }
-      ]
-    })
-    console.log("contentType", contentType(type))
+  const onDelete = (id) => {
+    const {removeContent} = props
+    removeContent({id})
   }
 
   return (
     <div className={classes.root}>
       <div className={classes.information}><InformationIcon/>Information</div>
       <div className={classes.dashboardContentWrapper}>
-        {!!content && content.map(createContentType)}
+        {!!content && content.map(content => {
+          return (
+            <WidgetContent
+              type={content.type}
+              key={content.id}
+              content={content}
+              onDelete={onDelete}
+            />
+          )
+        })}
       </div>
       <Button variant='flat' color='primary' className={classes.addButton} onClick={handleClick}>
         <AddIcon/>
@@ -159,7 +152,7 @@ const DashboardContent = (props) => {
         onClick={handleClose}
       >
         {options.map(option => (
-          <MenuItem key={option.name} className={classes.menuItem} onClick={() => onClickAdd(option.type)}>
+          <MenuItem key={option.name} className={classes.menuItem} onClick={() => addWidget(option.type)}>
             {option.svg}{option.name}
           </MenuItem>
         ))}
@@ -169,12 +162,14 @@ const DashboardContent = (props) => {
 }
 const mapStateToProps = (store) => {
   return {
-    dashboardContent: store.dashboardContent.board
+    board: store.dashboardContent.board
   }
 }
 const mapDispatchToProps = {
-  fetchDashboardContent,
-  addContents,
+  fetchContent,
+  synchronize,
+  updateContent,
+  removeContent
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DashboardContent))
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(DashboardsContent))

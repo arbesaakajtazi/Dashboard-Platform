@@ -5,12 +5,12 @@ import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
 import echarts from 'echarts'
+import {Typography} from "@material-ui/core";
 
 const styles = {
   chartWrapper: {
     width: '100%',
     height: '100%',
-    // display: 'flex'
   }
 }
 
@@ -48,10 +48,9 @@ class Chart extends React.Component {
   }
 
 
-
   setOption() {
     const padding = 32
-    const { options, onOptionsChanged } = this.props
+    const {options, onOptionsChanged} = this.props
     if (!options) {
       if (this.chart) {
         this.chart.clear()
@@ -60,7 +59,7 @@ class Chart extends React.Component {
     }
     const graph = {
       ...options,
-      title:{
+      title: {
         left: 'center',
         textStyle: {
           color: '#314151'
@@ -105,10 +104,11 @@ class Chart extends React.Component {
   }
 
   render() {
-    let { style, classes, children, className: classNameProp } = this.props
+    let {style, classes, children, className: classNameProp, title} = this.props
     return (
       <div className={classNames(classes.chartWrapper, classNameProp)} style={style}>
-        <div className={classes.chartWrapper} ref={'container'} />
+        <Typography>{title}</Typography>
+        <div className={classes.chartWrapper} ref={'container'}/>
         {children}
       </div>
     )

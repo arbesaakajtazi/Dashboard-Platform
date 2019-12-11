@@ -1,13 +1,71 @@
 import ACTION_TYPES from 'reducers/DashboardsContent/DashboardsContentActionTypes'
+import {WIDGETS} from 'Constants'
+import uuid from 'uuid'
 
 const initialState = {
   content: []
 }
+
+const widgetFromType = (type) => {
+  switch (type) {
+    case WIDGETS.GRAPH_TYPE.LINE:
+    case WIDGETS.GRAPH_TYPE.BAR:
+    case WIDGETS.GRAPH_TYPE.PIE:
+    case WIDGETS.GRAPH_TYPE.TREEMAP:
+      return {
+        data: [
+          {
+            "name": "Sales 1",
+            "value": 320
+          },
+          {
+            "name": "Sales 2",
+            "value": 552
+          },
+          {
+            "name": "Sales 3",
+            "value": 342
+          },
+          {
+            "name": "Sales 4",
+            "value": 431
+          },
+          {
+            "name": "Sales 5",
+            "value": 251
+          },
+          {
+            "name": "Sales 6",
+            "value": 445
+          }
+        ]
+      }
+    case WIDGETS.IMAGE:
+      return {url: 'https://images.unsplash.com/photo-1522124624696-7ea32eb9592c'}
+    case WIDGETS.TEXT:
+      return {text: ''}
+    default:
+      return {}
+  }
+}
+
 const content = (state = [], action) => {
   switch (action.type) {
     case ACTION_TYPES.RECEIVE_CONTENT:
+      return action.data.content.map(next => ({...next, id: uuid.v1()}))
     case ACTION_TYPES.UPDATE_CONTENT:
-      return action.data.content
+      const found = state.find(next => next.id === action.item.id)
+      if (!found) {
+        return [...state, {...widgetFromType(action.item.type), type: action.item.type, id: uuid.v1(), actionId: uuid.v1()}]
+      }
+      return state.map(next => {
+        if (next.id === action.item.id) {
+          return {...action.item, actionId: uuid.v1()}
+        }
+        return next
+      })
+    case ACTION_TYPES.DELETE_CONTENT:
+      return state.filter(next => next.id !== action.item.id)
     default:
       return state
   }
@@ -15,17 +73,43 @@ const content = (state = [], action) => {
 
 const board = (state = initialState, action) => {
   switch (action.type) {
+    case ACTION_TYPES.UPDATE_CONTENT:
+    case ACTION_TYPES.DELETE_CONTENT:
+      console.log("state.content",state.content)
+      return {...state, content: content(state.content, action), actionId: uuid.v1()}
     case ACTION_TYPES.RECEIVE_CONTENT:
       return {...action.data, content: content(state.content, action)}
     case ACTION_TYPES.CONTENT_NOT_FOUND:
       return initialState
     default:
-      return {...action.data, content: content(state.content, action)}
+      return {...state, content: content(state.content, action)}
+  }
+}
+
+/**
+ * TODO: Room for improvement, make this reusable(Generic)
+ * @param state
+ * @param action
+ *  * @type {{isLoading: boolean, response: {code: number, message: string}}}
+ */
+const defaultRequest = {
+  isLoading: false,
+  response: {
+    code: 200,
+    message: "Last request succeed!"
+  },
+}
+
+const request = (state = defaultRequest, action) => {
+  switch (action.type) {
+    case ACTION_TYPES.REQUEST_CONTENT:
+
   }
 }
 const dashboardsContent = (state = {}, action) => {
   return {
-    board: board(state.board, action)
+    board: board(state.board, action),
+    request: request(state.request, action)
   }
 }
 

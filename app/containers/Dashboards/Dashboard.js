@@ -15,7 +15,7 @@ import DashboardsCard from 'presentations/DashboardCards/DashboardsCard'
 import {deleteDashboards, fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
 import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
-import DashboardContent from 'containers/Dashboards/DashboardContent'
+import WidgetView from 'presentations/DashboardContent/DashboardsContent'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -253,7 +253,7 @@ class Dashboard extends Component {
             <AddIcon/>
           </Button>
         </div>
-        {selectedDashboard && <DashboardContent/>}
+        {selectedDashboard && <WidgetView/>}
       </Content>
     )
   }

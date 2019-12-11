@@ -13,7 +13,7 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
     width: '100%',
     height: '100vh',
     maxWidth: size.drawer,
-    padding: `${(size.spacing * 7) + 2}px  ${(size.spacing * 6) - 2}px`,
+    padding: `${(size.spacing * 7) + 2}px  ${size.spacing * 5}px`,
     display: 'flex',
     flexFlow: 'column nowrap',
     justifyContent: 'space-between',

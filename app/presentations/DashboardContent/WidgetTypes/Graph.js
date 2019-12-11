@@ -1,6 +1,10 @@
+/**
+ * Created by ArbesaKajtazi on 10/11/2019.
+ */
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Card from 'presentations/Card/CardView'
+import Chart from 'presentations/Chart'
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -16,7 +20,6 @@ const Graph = (props) => {
   const {classes, content} = props
 
   const graphData = content.data
-  console.log('graphData', graphData)
 
   const withAxis = {
     xAxis: {
@@ -46,7 +49,9 @@ const Graph = (props) => {
   const options = (content.type === 'PIE' || content.type === 'TREEMAP') ? noAxis : withAxis
 
   return (
-    <Card className={classes.root} options={options} {...props} title={'New widget'}/>
+    <Card className={classes.root}>
+      <Chart options={options} title={'New widget'}/>
+    </Card>
   )
 }
 

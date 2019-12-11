@@ -1,3 +1,6 @@
+/**
+ * Created by ArbesaKajtazi on 10/11/2019.
+ */
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Card from 'presentations/Card/CardView'
@@ -5,12 +8,13 @@ import Card from 'presentations/Card/CardView'
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
     width: 380,
-    height: 350,
+    height: 320,
     marginRight: size.spacing * 2
   },
   image: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    borderRadius: 'inherit'
   }
 })
 

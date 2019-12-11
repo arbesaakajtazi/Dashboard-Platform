@@ -1,8 +1,9 @@
+/**
+ * Created by ArbesaKajtazi on 1/10/2019.
+ */
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
-import Typography from "@material-ui/core/Typography";
-import Chart from 'presentations/Chart'
 
 let styles = ({size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -12,10 +13,11 @@ let styles = ({size, palette, shadows, typography, zIndex}) => ({
   },
 })
 
-const Card = ({options, classes, children, activeDashboardView, className, title, titleClass, graphClass, ...other}) => {
-  return <div className={classNames(classes.root, className)} {...other}>
-    {title && <Typography variant={'subtitle1'}>{title}</Typography>}
-    {children || <Chart options={options} className={graphClass}/>}
-  </div>
+const Card = ({classes, children, className, title}) => {
+  return (
+    <div className={classNames(classes.root, className)}>
+      {children}
+    </div>
+  )
 }
 export default withStyles(styles)(Card)
