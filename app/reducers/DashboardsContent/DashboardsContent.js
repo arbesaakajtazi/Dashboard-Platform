@@ -26,22 +26,10 @@ const widgetFromType = (type) => {
             "name": "Sales 3",
             "value": 342
           },
-          {
-            "name": "Sales 4",
-            "value": 431
-          },
-          {
-            "name": "Sales 5",
-            "value": 251
-          },
-          {
-            "name": "Sales 6",
-            "value": 445
-          }
         ]
       }
     case WIDGETS.IMAGE:
-      return {url: 'https://images.unsplash.com/photo-1522124624696-7ea32eb9592c'}
+      return {url: 'https://heartheboatsing.files.wordpress.com/2016/10/little-boat.jpg'}
     case WIDGETS.TEXT:
       return {text: ''}
     default:
@@ -56,7 +44,12 @@ const content = (state = [], action) => {
     case ACTION_TYPES.UPDATE_CONTENT:
       const found = state.find(next => next.id === action.item.id)
       if (!found) {
-        return [...state, {...widgetFromType(action.item.type), type: action.item.type, id: uuid.v1(), actionId: uuid.v1()}]
+        return [...state, {
+          ...widgetFromType(action.item.type),
+          type: action.item.type,
+          id: uuid.v1(),
+          actionId: uuid.v1()
+        }]
       }
       return state.map(next => {
         if (next.id === action.item.id) {
@@ -75,7 +68,7 @@ const board = (state = initialState, action) => {
   switch (action.type) {
     case ACTION_TYPES.UPDATE_CONTENT:
     case ACTION_TYPES.DELETE_CONTENT:
-      console.log("state.content",state.content)
+      console.log("state.content", state.content)
       return {...state, content: content(state.content, action), actionId: uuid.v1()}
     case ACTION_TYPES.RECEIVE_CONTENT:
       return {...action.data, content: content(state.content, action)}
@@ -103,7 +96,8 @@ const defaultRequest = {
 const request = (state = defaultRequest, action) => {
   switch (action.type) {
     case ACTION_TYPES.REQUEST_CONTENT:
-
+    default:
+      return state
   }
 }
 const dashboardsContent = (state = {}, action) => {

@@ -1,23 +1,17 @@
 import React, {useState} from 'react'
 import withStyles from '@material-ui/core/styles/withStyles'
 import {IconButton} from '@material-ui/core'
-import {WIDGETS} from "../../Constants";
-import Note from 'presentations/DashboardContent/WidgetTypes/Note'
-import Image from 'presentations/DashboardContent/WidgetTypes/Image'
-import Graph from 'presentations/DashboardContent/WidgetTypes/Graph'
+import {WIDGETS} from 'Constants'
+import Note from 'presentations/WidgetTypes/Note'
+import Image from 'presentations/WidgetTypes/Image'
+import Graph from 'presentations/WidgetTypes/Graph'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
+import Draggable from 'presentations/Draggable'
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
     display: 'flex',
-    height: '100%',
-    position: 'relative'
-  },
-  flexEnd: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    height: '7%',
-    width: '100%'
+    position: 'absolute'
   },
   deleteButton: {
     position: 'absolute',
@@ -41,7 +35,8 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   }
 })
 const DashboardContent = (props) => {
-  const {classes, content, type, onDelete} = props
+  const {classes, content, type, onDelete, x, y, onMouseDown, onMouseMove, onMouseUp, width, height} = props
+  console.log('width', width)
   const {id} = content
   const [hover, setHover] = useState(false)
   const onMouseEnter = () => {
@@ -71,17 +66,20 @@ const DashboardContent = (props) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root}
+         onMouseDown={onMouseDown}
+         onMouseMove={onMouseMove}
+         onMouseUp={onMouseUp}
+         style={{top: y, left: x, height: height, width: width}}>
       {createContentType()}
       <IconButton className={classes.deleteButton}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
-                  onClick={() => onDelete(id)}
-      >
+                  onClick={() => onDelete(id)}>
         <DeleteIcon className={hover ? classes.visible : classes.notVisible}/>
       </IconButton>
     </div>
   )
 }
 
-export default withStyles(styles)(DashboardContent)
+export default withStyles(styles)(Draggable(DashboardContent))

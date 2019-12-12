@@ -7,8 +7,6 @@ import Card from 'presentations/Card/CardView'
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
-    width: 380,
-    height: 320,
     marginRight: size.spacing * 2
   },
   image: {

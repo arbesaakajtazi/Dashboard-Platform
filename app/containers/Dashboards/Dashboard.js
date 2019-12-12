@@ -15,7 +15,7 @@ import DashboardsCard from 'presentations/DashboardCards/DashboardsCard'
 import {deleteDashboards, fetchDashboards, filter} from 'reducers/Dashboards/DashboardsActions'
 import {children, filteredDashboards} from 'reducers/Dashboards/Dashboards'
 import AddIcon from '@material-ui/icons/Add'
-import WidgetView from 'presentations/DashboardContent/DashboardsContent'
+import DashboardsContent from 'presentations/DashboardContent/DashboardsContent'
 
 let styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
@@ -122,7 +122,7 @@ class Dashboard extends Component {
   componentDidUpdate(prevProps) {
     const {dashboards, match: {params: {id = ''} = {}} = {}} = this.props
     const {match: {params: {id: prevId = ''}}} = prevProps
-    if (prevProps.dashboards !== dashboards || prevId !== id) {
+    if (prevId !== id) {
       this.setState({
         selectedDashboard: dashboards.find(next => next.id === id)
       })
@@ -253,7 +253,7 @@ class Dashboard extends Component {
             <AddIcon/>
           </Button>
         </div>
-        {selectedDashboard && <WidgetView/>}
+        {selectedDashboard && <DashboardsContent selectedDashboard={selectedDashboard}/>}
       </Content>
     )
   }

@@ -6,9 +6,7 @@ import {TextField} from '@material-ui/core'
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
     backgroundColor: palette.background.note,
-    width: 400,
-    height: 300,
-    padding: `${size.spacing * 2}px`,
+    padding: `${size.spacing * 3}px ${size.spacing * 2}px`,
     marginRight: size.spacing * 2,
     position: 'relative'
   },

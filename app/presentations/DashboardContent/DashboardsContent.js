@@ -18,9 +18,9 @@ import {
   removeContent,
   synchronize
 } from 'reducers/DashboardsContent/DashboardsContentActions'
-import Note from 'presentations/DashboardContent/WidgetTypes/Note'
-import Image from 'presentations/DashboardContent/WidgetTypes/Image'
-import Graph from 'presentations/DashboardContent/WidgetTypes/Graph'
+import Note from 'presentations/WidgetTypes/Note'
+import Image from 'presentations/WidgetTypes/Image'
+import Graph from 'presentations/WidgetTypes/Graph'
 import {WIDGETS} from 'Constants'
 import WidgetContent from "./DashboardContent";
 
@@ -77,11 +77,13 @@ const options = [
 ]
 
 const DashboardsContent = (props) => {
-  const {classes, fetchContent, board, synchronize} = props
+  const {classes, fetchContent, board, synchronize, selectedDashboard} = props
   const {content, actionId} = board
+  const {id} = selectedDashboard
+  console.log('initial content', content.length)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-  const {id} = useParams()
+  // const {id} = useParams()
 
   useEffect(() => {
     fetchContent(id)
@@ -120,12 +122,19 @@ const DashboardsContent = (props) => {
       <div className={classes.information}><InformationIcon/>Information</div>
       <div className={classes.dashboardContentWrapper}>
         {!!content && content.map(content => {
+          const layout = content.layout || {x: 0, y: 0}
+          const {x, y, width, height} = layout
           return (
             <WidgetContent
               type={content.type}
               key={content.id}
               content={content}
               onDelete={onDelete}
+              x={x}
+              y={y}
+              width={width}
+              height={height}
+              onLocationChanged={(x, y) => addOrUpdate({...content, layout: {...layout, x, y}})}
             />
           )
         })}

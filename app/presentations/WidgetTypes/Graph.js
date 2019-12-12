@@ -11,8 +11,8 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     marginRight: size.spacing * 2,
     marginBottom: size.spacing * 2,
     padding: size.spacing * 2,
-    width: 400,
-    minHeight: 300
+    height: '100%',
+    width: '100%'
   }
 })
 
