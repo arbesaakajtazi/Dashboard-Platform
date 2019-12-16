@@ -79,13 +79,15 @@ const options = [
 const DashboardsContent = (props) => {
   const {classes, fetchContent, board, synchronize, selectedDashboard} = props
   const {content, actionId} = board
-  const {id} = selectedDashboard
+  //const {id} = selectedDashboard
   console.log('initial content', content.length)
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
-  // const {id} = useParams()
+  const {id} = useParams()
+  console.log('id', id)
 
   useEffect(() => {
+    console.log('current Id', id)
     fetchContent(id)
   }, [id])
 
@@ -130,11 +132,9 @@ const DashboardsContent = (props) => {
               key={content.id}
               content={content}
               onDelete={onDelete}
-              x={x}
-              y={y}
-              width={width}
-              height={height}
+              x={x} y={y} width={width} height={height}
               onLocationChanged={(x, y) => addOrUpdate({...content, layout: {...layout, x, y}})}
+              onSizeChanged={(width, height) => addOrUpdate({...content, layout: {...layout,width, height}})}
             />
           )
         })}

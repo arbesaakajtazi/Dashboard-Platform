@@ -8,7 +8,9 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
     backgroundColor: palette.background.note,
     padding: `${size.spacing * 3}px ${size.spacing * 2}px`,
     marginRight: size.spacing * 2,
-    position: 'relative'
+    position: 'relative',
+    height: props => props.height,
+    width: props => props.width
   },
   textField: {
     '& $underline': {

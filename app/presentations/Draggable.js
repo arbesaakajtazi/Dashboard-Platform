@@ -34,11 +34,11 @@ const Draggable = (Component) => {
     }
 
     onMouseMove = (event) => {
+      event.preventDefault()
       const {location} = this.state
       if (!location) {
         return
       }
-      event.preventDefault()
 
       const {pageX, pageY} = event
       this.setState({
@@ -49,6 +49,11 @@ const Draggable = (Component) => {
 
     onMouseUp = (event) => {
       event.preventDefault()
+      const {location} = this.state
+      if (!location) {
+        return
+      }
+
       this.setState({
         location: undefined
       })

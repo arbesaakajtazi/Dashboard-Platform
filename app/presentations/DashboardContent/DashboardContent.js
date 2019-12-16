@@ -6,20 +6,26 @@ import Note from 'presentations/WidgetTypes/Note'
 import Image from 'presentations/WidgetTypes/Image'
 import Graph from 'presentations/WidgetTypes/Graph'
 import DeleteIcon from 'presentations/Icons/DeleteIcon'
-import Draggable from 'presentations/Draggable'
+import draggable from 'presentations/Draggable'
+import resizable from 'presentations/Resizeable'
 
 const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
   root: {
     display: 'flex',
-    position: 'absolute'
+    position: 'absolute',
+    '&:hover': {
+      '& $deleteButton': {
+        display: 'block'
+      }
+    }
   },
   deleteButton: {
     position: 'absolute',
+    display: 'none',
     top: 15,
     right: 15,
-    height: '10%',
-    width: '10%',
     cursor: 'pointer',
+    // zIndex: 1,
     '& svg': {
       fontSize: size.headingFontSize,
       '& path': {
@@ -27,29 +33,33 @@ const styles = ({theme, size, palette, shadows, typography, zIndex}) => ({
       }
     }
   },
-  visible: {
-    display: 'flex'
+  resize: {
+    position: 'absolute',
+    right: size.spacing,
+    bottom: -2,
+    '&:hover': {
+      cursor: 'nwse-resize'
+    },
+    width: size.spacing,
+    height: size.spacing,
   },
-  notVisible: {
-    display: 'none'
-  }
 })
 const DashboardContent = (props) => {
-  const {classes, content, type, onDelete, x, y, onMouseDown, onMouseMove, onMouseUp, width, height} = props
-  console.log('width', width)
+  const {
+    classes,
+    content,
+    type,
+    onDelete,
+    x, y,
+    onMouseDown, onMouseMove, onMouseUp,
+    width, height,
+    resizeListeners,
+  } = props
   const {id} = content
-  const [hover, setHover] = useState(false)
-  const onMouseEnter = () => {
-    setHover(true)
-  }
-  const onMouseLeave = () => {
-    setHover(false)
-  }
   const createContentType = () => {
     let commonProps = {
-      content
+      content, width, height,
     }
-
     switch (type) {
       case WIDGETS.TEXT:
         return <Note {...commonProps}/>
@@ -70,16 +80,15 @@ const DashboardContent = (props) => {
          onMouseDown={onMouseDown}
          onMouseMove={onMouseMove}
          onMouseUp={onMouseUp}
-         style={{top: y, left: x, height: height, width: width}}>
+         style={{top: y, left: x}}>
       {createContentType()}
       <IconButton className={classes.deleteButton}
-                  onMouseEnter={onMouseEnter}
-                  onMouseLeave={onMouseLeave}
                   onClick={() => onDelete(id)}>
-        <DeleteIcon className={hover ? classes.visible : classes.notVisible}/>
+        <DeleteIcon />
       </IconButton>
+      <div className={classes.resize}{...resizeListeners}/>
     </div>
   )
 }
 
-export default withStyles(styles)(Draggable(DashboardContent))
+export default withStyles(styles)(draggable(resizable(DashboardContent)))

@@ -26,12 +26,16 @@ const widgetFromType = (type) => {
             "name": "Sales 3",
             "value": 342
           },
-        ]
+        ],
+        layout: { width: 420, height: 320 }
       }
     case WIDGETS.IMAGE:
-      return {url: 'https://heartheboatsing.files.wordpress.com/2016/10/little-boat.jpg'}
+      return {
+        url: 'https://heartheboatsing.files.wordpress.com/2016/10/little-boat.jpg',
+        layout: {height: 320, width: 480}
+      }
     case WIDGETS.TEXT:
-      return {text: ''}
+      return {text: '', layout: {width: 360, height: 320}}
     default:
       return {}
   }

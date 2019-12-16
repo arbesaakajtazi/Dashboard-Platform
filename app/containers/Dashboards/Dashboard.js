@@ -253,7 +253,7 @@ class Dashboard extends Component {
             <AddIcon/>
           </Button>
         </div>
-        {selectedDashboard && <DashboardsContent selectedDashboard={selectedDashboard}/>}
+        <DashboardsContent selectedDashboard={selectedDashboard}/>
       </Content>
     )
   }
